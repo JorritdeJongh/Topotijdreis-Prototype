@@ -1,5 +1,9 @@
 html,body{height:100%;width:100%;margin:0;padding:0}
-body{overflow:hidden}#main-window{height:100%;width:100%}
+body{overflow:hidden}
+#esri-cookie-notification {
+    display: none;
+}
+#main-window{height:100%;width:100%}
 .header{height:70px;margin:0;overflow:hidden;background-color:#007395}
 .header-logo{height:60px;float:right;padding-right:140px;padding-top:8px;padding-left:8px}
 .header-title{height:60px;padding-top:5px;padding-left:5px;}
@@ -15,11 +19,11 @@ body{overflow:hidden}#main-window{height:100%;width:100%}
 .arrow{top:50%;right:-11px;margin-top:-11px;border-left-color:#999;border-left-color:rgba(0,0,0,0.25);border-width:11px;border-bottom:12px solid transparent;margin-top:-12px;width:0;border-left:12px solid #f7f7f7;height:0;border-top:12px solid transparent;top:50%;position:absolute}
 .popover-content{padding:9px 14px}
 .sidebar{height:100%!important;width:395px;margin:0;overflow:hidden;background-color:rgba(204, 255, 255, 0.2);}
-
+.modal-content.column-18{text-align: justify!important}
 #mapDiv{margin:0}
 .mapDiv
 .logo-med{opacity:.75!important}
-.dijitSplitter{margin-left:395px!important}
+.dijitSplitter{margin-left:395px!important;background-color:#71b3c6!important}
 .halfCircleRight{height:80px;width:40px;border-radius:0 80px 80px 0;-moz-border-radius:0 80px 80px 0;-webkit-border-radius:0 80px 80px 0;float:left;font-size:3em;padding-top:5px;padding-left:5px;margin-top:20px}
 .dijitSliderH{width:70%!important;margin-left:2.5em!important;opacity:.85}
 .outside-lod{opacity:.7}
@@ -27,10 +31,10 @@ body{overflow:hidden}#main-window{height:100%;width:100%}
 .step-two-message-container{position:absolute;bottom:325px;width:100%}
 .step-three-message-container{position:absolute;top:235px;width:100%}
 .step-four-message-container{position:absolute;top:325px;width:100%}
-.step-one-message{top:1.5em;left:1em;position:relative}
-.step-two-message{top:1.5em;left:1em;position:relative}
-.step-three-message{top:1.5em;left:1em;position:relative}
-.step-four-message{width:80%;left:3em;position:relative;margin-top:0!important;padding-top:0!important}
+.step-one-message{top:1.5em;left:1em;position:relative;text-align: justify!important;text-justify:inter-word!important}
+.step-two-message{top:1.5em;left:1em;position:relative;text-align: justify!important;text-justify:inter-word!important}
+.step-three-message{top:1.5em;left:1em;position:relative;text-align: justify!important;text-justify:inter-word!important}
+.step-four-message{width:80%;left:3em;position:relative;margin-top:0!important;padding-top:0!important;text-align: justify!important;text-justify:inter-word!important}
 .hide-step{opacity:0!important}
 .save-success-msg{padding:1em;z-index:100;position:absolute;width:400px;height:90px;background-color:#ddeedbf7;border:1px solid #9bc19c;right:20px;top:20px}
 .legend-label{font-size:.8em!important;color:#5d5d5d!important}
@@ -127,7 +131,7 @@ body{overflow:hidden}#main-window{height:100%;width:100%}
 
 #geocoder{margin-top:3em}
 .simpleGeocoder
-.esriGeocoder{border:1px solid #CFCFCF!important;margin-left:20px!important;background:#71b3c65e!important;width: 110%!important}
+.esriGeocoder{border:1.5px solid #71b3c6!important;margin-left:20px!important;background:#71b3c65e!important;width: 110%!important}
 .simpleGeocoder
 .esriGeocoderContainer{width:270px!important;margin-left:30px!important}
 .simpleGeocoder
@@ -135,8 +139,8 @@ body{overflow:hidden}#main-window{height:100%;width:100%}
 #geocoder_input{height:20px!important;width:240px!important;background:#f5ffff!important}
 #timeline-container{height:0;margin-left:395px;overflow:hidden}
 
-.timeline-legend-container{float:left;color:#000;width:210px;padding-left:5px}
-.timeline-legend-header{font-size:1em;padding-bottom:5px;margin-left:5px}
+.timeline-legend-container{float:left;color:#002b56;width:210px;padding-left:5px}
+.timeline-legend-header{font-size:1em;font-weight:bold;padding-bottom:5px;margin-left:5px}
 #timeline{margin-left:210px;padding-right:5px}
 .timeline-frame{border:none!important}
 .timeline-event-selected{border-color:#ff0018!important}
@@ -241,7 +245,7 @@ body{overflow:hidden}#main-window{height:100%;width:100%}
 .dijitSliderH{opacity:.4}
 .dijitSliderH:hover{opacity:.85}
 
-#map_zoom_slider{background-color:transparent;opacity:.75}
+#map_zoom_slider{background-color:transparent;opacity:.75;border:2px solid #71b3c6!important}
 .esriSimpleSlider{position:absolute;left:10px;top:10px;text-align:center;color:#777;cursor:pointer;border:none;-webkit-border-radius:0;-moz-border-radius:0;-ms-border-radius:0;-o-border-radius:0;border-radius:0;-webkit-box-shadow:0 0 16px rgba(0,0,0,0.1);-moz-box-shadow:0 0 16px rgba(0,0,0,0.1);box-shadow:0 0 16px rgba(0,0,0,0.1);-webkit-user-select:none;-moz-user-select:none;user-select:none;background-color:transparent;opacity:.75}
 .esriSimpleSlider div{margin-bottom:0;width:32px;height:32px;font-size:16px;line-height:29px;background-color:#F3F3EF;border:1px solid #d3d3cF;-webkit-transition:background-color .1s linear;-moz-transition:background-color .1s linear;-o-transition:background-color .1s linear;transition:background-color .1s linear}
 .esriSimpleSlider div:hover{background-color:#e3e3dF;color:#555}
@@ -264,9 +268,12 @@ body{overflow:hidden}#main-window{height:100%;width:100%}
 .toggle-scale{height:30px;border-radius:2px!important;margin:5px;border:none!important}
 .topo-legend{margin-left:5px;width:10px}.topo-legend > label.btn.toggle-scale > span{margin-left:20px}.left-col{float:left;width:30%}.user-name{font-size:.75em;margin-top:.1em;text-align:center}.user-thumbnail{display:block;margin-left:auto;margin-right:auto;max-width:80%;border-radius:50%}
 .sign-in-btn{margin-bottom:.17em!important}
-.sign-out-btn{float:right;margin-top:.2em;font-size:.8em;color:#0079c1}
+.sign-out-btn{float:right;margin-top:.5em;font-size:.8em;color:#0079c1}
 .sign-out-btn:hover{cursor:pointer;text-decoration:underline}
 .save-maps-btn{margin-bottom:.17em!important}
-.save-maps-container{padding:.5em;border-radius:.3em;border:1px solid #efefef;height:40px}
+.save-maps-container{padding:.5em;border-radius:.3em;height:40px/*;border:1px solid #efefef*/}
 .save-maps-message{padding-bottom:2em;height:80px}
-.reset-btn{margin-right:5%!important;margin-left:5%!important;width:90%!important;position:absolute!important;bottom:5em!important;background:#71b3c6!important}
+.reset-btn{margin-right:5%!important;margin-left:5%!important;width:90%!important;position:absolute!important;bottom:5em!important;background:#71b3c6!important;color:#002b56!important;font-weight:bold!important}
+.js-modal-toggle{border: 1px solid #6e6e6e!important}
+.trailer-half.font-size-2{font-weight:bold!important;color:rgba(0,59,119)!important}
+.icon-ui-gray:before{color:#ffffff!important}

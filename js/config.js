@@ -13,7 +13,7 @@ var Config = {
      * Browser window title (text that will show up in the browser bookmarks)
      *
      ***************************************************************************/
-    "APP_TITLE": "Kadaster: Topotijdreis",
+    "APP_TITLE": "Topotijdreis: Meer dan 200 jaar topografie",
 
     /**************************************************************************
      *
