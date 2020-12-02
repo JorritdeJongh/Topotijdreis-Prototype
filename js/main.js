@@ -1074,17 +1074,17 @@ require([
         function setClassname(scale) {
             var className;
             if (scale <= TOPO_MAP_SCALES[5].value) {
-                className = "one";	// 0 - 12000
+                className = "one";	// 1 - 5 000
             } else if (scale > TOPO_MAP_SCALES[5].value && scale <= TOPO_MAP_SCALES[4].value) {
-                className = "two";	// 12001 - 24000
+                className = "two";	// 5 000 - 10 000
             } else if (scale > TOPO_MAP_SCALES[4].value && scale <= TOPO_MAP_SCALES[3].value) {
-                className = "three";// 24001 - 63360
+                className = "three";// 10 000 - 25 000
             } else if (scale > TOPO_MAP_SCALES[3].value && scale <= TOPO_MAP_SCALES[2].value) {
-                className = "four";	// 63361 - 125000
+                className = "four";	// 25 000 - 50 000
             } else if (scale > TOPO_MAP_SCALES[2].value && scale <= TOPO_MAP_SCALES[1].value) {
-                className = "five";	// 125001 - 250000
+                className = "five";	// 50 000 - 100 000
             } else if (scale > TOPO_MAP_SCALES[1].value) {
-                className = "six";
+                className = "six"; // 100 000+
               }
             return className;
         }

@@ -121,45 +121,45 @@ var Config = {
     "TIMELINE_LEGEND_VALUES": [
         {
             "label": "100 000+",
-            "value": 500000,
+            "value": 499999,
             "color": "#004C99",
             "className": "six",
-            "lodThreshold": 6
+            "lodThreshold": 4
           },
         {
             "label": "50 000 - 100 000",
-            "value": 100000,
+            "value": 99999,
             "color": "#0066CC",
             "className": "five",
-            "lodThreshold": 7
+            "lodThreshold": 5
         },
         {
             "label": "25 000 - 50 000",
-            "value": 50000,
+            "value": 49999,
             "color": "#0080FF",
             "className": "four",
-            "lodThreshold": 8
+            "lodThreshold": 6
                   },
         {
             "label": "10 000 - 25 000",
-            "value": 25000,
+            "value": 24999,
             "color": "#3399FF",
             "className": "three",
-            "lodThreshold": 9
+            "lodThreshold": 8
         },
         {
             "label": "5 000 - 10 000",
-            "value": 10000,
+            "value": 9999,
             "color": "#66B2FF",
             "className": "two",
-            "lodThreshold": 10
+            "lodThreshold": 9
         },
         {
             "label": "1 - 5 000",
-            "value": 5000,
+            "value": 4999,
             "color": "#99CCFF",
             "className": "one",
-            "lodThreshold": 11
+            "lodThreshold": 10
         }
     ],
 
@@ -249,8 +249,8 @@ var Config = {
 
     "EXTENT_EXPAND": 0.60,
 
-    "ZOOM_LEVEL_THRESHOLD": 8,
-    "THUMBNAIL_VISIBLE_THRESHOLD": 12,
+    "ZOOM_LEVEL_THRESHOLD": 6,
+    "THUMBNAIL_VISIBLE_THRESHOLD": 6,
     "THUMBNAIL_VISIBLE_THRESHOLD_MSG": "Zoom verder in om de kaart weer te geven",
 
     /**************************************************************************
