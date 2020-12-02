@@ -680,7 +680,7 @@ require([
                                     var scaleLabel = number.format(scale, {
                                         places: 0
                                     });
-                                  //  var lodThreshold = setLodThreshold(scale, Config.TIMELINE_LEGEND_VALUES, nScales, minScaleValue, maxScaleValue);
+                                    var lodThreshold = setLodThreshold(scale, Config.TIMELINE_LEGEND_VALUES, nScales, minScaleValue, maxScaleValue);
 
                                     var mosaicRule = new MosaicRule({
                                         "method": MosaicRule.METHOD_CENTER,
@@ -768,7 +768,8 @@ require([
                     "<img class='rm-layer-icon' src='" + imgSrc + "'>" +
                     "<div class='thumbnailMapName' data-mapname-objectid='" + objID + "'>" + mapName + "</div>" +
                     "<div class='thumbnailMapImprintYear'>" + imprintYear + "</div>" +
-                    "<div class='downloadLink'><a href='" + downloadLink + "' target='_parent'>download map</a></div>",
+                    "<div class='downloadLink'><a href='" + downloadLink + "' target='_parent'>Download deze kaart</a></div>" +
+                    "<div class='TransSlider'>" + "Gebruik de slider hieronder om de transparantie aan te passen" + "</div>",
                 onclick: function (evt) {
                     var objID = evt.target.getAttribute("data-objectid");
                     var storeObj = store.query({
@@ -1072,17 +1073,19 @@ require([
 
         function setClassname(scale) {
             var className;
-            if (scale <= TOPO_MAP_SCALES[4].value) {
+            if (scale <= TOPO_MAP_SCALES[5].value) {
                 className = "one";	// 0 - 12000
-            } else if (scale > TOPO_MAP_SCALES[4].value && scale <= TOPO_MAP_SCALES[3].value) {
+            } else if (scale > TOPO_MAP_SCALES[5].value && scale <= TOPO_MAP_SCALES[4].value) {
                 className = "two";	// 12001 - 24000
-            } else if (scale > TOPO_MAP_SCALES[3].value && scale <= TOPO_MAP_SCALES[2].value) {
+            } else if (scale > TOPO_MAP_SCALES[4].value && scale <= TOPO_MAP_SCALES[3].value) {
                 className = "three";// 24001 - 63360
-            } else if (scale > TOPO_MAP_SCALES[2].value && scale <= TOPO_MAP_SCALES[1].value) {
+            } else if (scale > TOPO_MAP_SCALES[3].value && scale <= TOPO_MAP_SCALES[2].value) {
                 className = "four";	// 63361 - 125000
-            } else if (scale > TOPO_MAP_SCALES[1].value) {
+            } else if (scale > TOPO_MAP_SCALES[2].value && scale <= TOPO_MAP_SCALES[1].value) {
                 className = "five";	// 125001 - 250000
-            }
+            } else if (scale > TOPO_MAP_SCALES[1].value) {
+                className = "six";
+              }
             return className;
         }
 

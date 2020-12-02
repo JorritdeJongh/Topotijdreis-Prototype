@@ -28,9 +28,9 @@ body{overflow:hidden}
 .dijitSliderH{width:70%!important;margin-left:2.5em!important;opacity:.85}
 .outside-lod{opacity:.7}
 .step-one-message-container{position:absolute;width:100%}
-.step-two-message-container{position:absolute;bottom:325px;width:100%}
-.step-three-message-container{position:absolute;top:235px;width:100%}
-.step-four-message-container{position:absolute;top:325px;width:100%}
+.step-two-message-container{position:absolute;bottom:320px;width:100%;}
+.step-three-message-container{position:absolute;top:150px;width:100%}
+.step-four-message-container{position:absolute;top:250px;width:100%}
 .step-one-message{top:1.5em;left:1em;position:relative;text-align: justify!important;text-justify:inter-word!important}
 .step-two-message{top:1.5em;left:1em;position:relative;text-align: justify!important;text-justify:inter-word!important}
 .step-three-message{top:1.5em;left:1em;position:relative;text-align: justify!important;text-justify:inter-word!important}
@@ -131,12 +131,13 @@ body{overflow:hidden}
 
 #geocoder{margin-top:3em}
 .simpleGeocoder
-.esriGeocoder{border:1.5px solid #71b3c6!important;margin-left:20px!important;background:#71b3c65e!important;width: 110%!important}
+.esriGeocoder{border:1.5px solid rgb(113,179,198)!important;margin-left:20px!important;background:rgb(113,179,198)!important;width: 110%!important}
 .simpleGeocoder
 .esriGeocoderContainer{width:270px!important;margin-left:30px!important}
 .simpleGeocoder
 .esriGeocoderResults{margin-left:20px!important;border:1px solid #CFCFCF!important;background:#f5ffff!important}
-#geocoder_input{height:20px!important;width:240px!important;background:#f5ffff!important}
+.esriGeocoderSearch {cursor: pointer; background: url("../dijit/images/arcgisGeocoder.png") no-repeat 0 0;}
+#geocoder_input{height:20px!important;width:240px!important;background:#f5ffff!important;text-align:center!important;font-weight:bold!important}
 #timeline-container{height:0;margin-left:395px;overflow:hidden}
 
 .timeline-legend-container{float:left;color:#002b56;width:210px;padding-left:5px}
@@ -145,9 +146,9 @@ body{overflow:hidden}
 .timeline-frame{border:none!important}
 .timeline-event-selected{border-color:#ff0018!important}
 .timeline-navigation{position:absolute;top:10px;left:10px;opacity:.85;width:150px}div
-.timeline-event-box.one{background-color:#006400;color:#f9f9f9}div
-.timeline-event-box.two{background-color:#228B22;color:#f9f9f9}div
-.timeline-event-box.three{background-color:#2E8B57;color:#fff}div
+.timeline-event-box.one{background-color:#99CCFF;color:#f9f9f9}div
+.timeline-event-box.two{background-color:#66B2FF;color:#f9f9f9}div
+.timeline-event-box.three{background-color:#3399FF;color:#fff}div
 .timeline-frame{-moz-box-sizing:border-box;border:1px solid #bebebe;box-sizing:border-box;overflow:hidden;position:relative}div
 .timeline-content{overflow:hidden;position:relative}div
 .timeline-axis{-moz-box-sizing:border-box;border-color:#bebebe;border-top-style:solid;border-width:1px;box-sizing:border-box}div
@@ -196,11 +197,12 @@ body{overflow:hidden}
 .timeline-event-line.notInScale{border-width:1px;opacity:.5}div
 .timeline-event-box.notInScale{background-color:#ddd;color:#333;opacity:.5}div
 .timeline-event-line.notInScale{border-width:1px;border-color:#bfbfbf;opacity:.5}div
-.timeline-event-box.one{background-color:#00EB89;color:#f9f9f9}div
-.timeline-event-box.two{background-color:#00C49D;color:#f9f9f9}div
-.timeline-event-box.three{background-color:#009CB0;color:#f9f9f9}div
-.timeline-event-box.four{background-color:#0075C4;color:#f9f9f9}div
-.timeline-event-box.five{background-color:#004ED7;color:#f9f9f9}div
+.timeline-event-box.one{background-color:#99CCFF;color:#f9f9f9}div
+.timeline-event-box.two{background-color:#66B2FF;color:#f9f9f9}div
+.timeline-event-box.three{background-color:#3399FF;color:#f9f9f9}div
+.timeline-event-box.four{background-color:#0080FF;color:#f9f9f9}div
+.timeline-event-box.five{background-color:#0066CC;color:#f9f9f9}div
+.timeline-event-box.six{background:#004C99;color:#f9f9f9}div
 .timeline-axis-text{color:#606060;padding:3px;white-space:nowrap;font-size:.75em;margin-left:-15px;margin-top:5px;font-weight:500}div
 .timeline-event-dot{border-style:solid;border-width:3px;border-radius:3px;-moz-border-radius:3px}div
 .timeline-event-box{text-align:center;border-style:solid;border-width:1px;border-radius:4px;-moz-border-radius:4px}
@@ -209,7 +211,7 @@ body{overflow:hidden}
 .timelineLegendHeader{font-size:1em;color:#666;padding-bottom:5px;margin-left:55px}
 .timeline-legend-container > div.btn-group.btn-group-vertical.topo-legend > label > span{color:#3b3b3b !important}
 
-.gridContainer{display:none;position:absolute;top:390px;bottom:60px;width:390px}
+.gridContainer{display:none;position:absolute;top:300px;bottom:60px;width:390px}
 .gridContainerMsg{margin-top:5px;font-size:1.1em;color:#666;margin-left:45px}#grid{height:90%;border:none}#grid
 .field-objID{display:none}#grid
 .field-name{width:95%;padding-left:10%}#grid
@@ -226,7 +228,8 @@ body{overflow:hidden}
 .thumbnailMapScale{font-size:.8em;color:#707070}
 .downloadLink{font-size:.75em;color:#666}
 .downloadLink:hover{color:#1d2966;cursor:pointer}
-.rm-layer-btn{position:absolute!important;left:15px!important;margin-top:-15px!important;border-radius:15px;opacity:.45}
+.TransSlider{font-size:.8em;color:#646464;font-weight:600}
+.rm-layer-btn{position:absolute!important;left:25px!important;margin-top:-10px!important;border-radius:15px;opacity:1}
 .rm-layer-btn:hover{opacity:.95}
 .rm-layer-icon{width:90px;float:left;padding:4px}
 .dgrid-row{margin-bottom:20px!important;margin-left:20px;height:120px;border-radius:4px}table > tr > td
@@ -242,7 +245,7 @@ body{overflow:hidden}
 .dgrid :focus,html
 .has-opera
 .dgrid :focus{outline:none!important}
-.dijitSliderH{opacity:.4}
+.dijitSliderH{opacity:.4;margin-top: 0.7em!important}
 .dijitSliderH:hover{opacity:.85}
 
 #map_zoom_slider{background-color:transparent;opacity:.75;border:2px solid #71b3c6!important}
@@ -277,3 +280,4 @@ body{overflow:hidden}
 .js-modal-toggle{border: 1px solid #6e6e6e!important}
 .trailer-half.font-size-2{font-weight:bold!important;color:rgba(0,59,119)!important}
 .icon-ui-gray:before{color:#ffffff!important}
+.update_date{font-weight:bold!important;color:#0079c5!important;text-decoration:overline!important}

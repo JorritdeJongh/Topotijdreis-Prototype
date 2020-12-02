@@ -1,7 +1,7 @@
 var Config = {
     // Register your app with your own APP ID
     // https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/accessing-arcgis-online-services/
-    "APP_ID": "TopoExplorer",
+    "APP_ID": "qki1YAkhwF1Fu8C8",
 
     "DOMAIN": "arcgis.com",
 
@@ -44,13 +44,13 @@ var Config = {
      *
      **************************************************************************/
     /* Step 1 */
-    "STEP_ONE_MESSAGE": "<span style='font-weight: bold'>Vind</span> een plaats door de zoekbalk hieronder te gebruiken of door de kaart te verschuiven . <br/><span style='font-weight: bold'>Klik</span> daarna op de kaart om de beschikbare <br/>historische kaarten van dat gebied weer te geven.",
+    "STEP_ONE_MESSAGE": "<span style='font-weight: bold'>Zoek</span> een plaats op de kaart of door te typen <br/> in de zoekbalk hieronder. <span style='font-weight: bold'>Klik</span> vervolgens op de <br/> kaart om de beschikbare historische kaarten <br/> van het geselecteerde gebied weer te geven.",
     "STEP_ONE_HALF_CIRCLE_MSG": "1",
     /* Step 2 */
     "STEP_TWO_MESSAGE": "<span style='font-weight: bold'>Klik</span> op één of meerdere historische kaarten in de <br/> tijdlijn onder de kaart om ze weer te geven. <br/><span style='font-weight: bold'>Kies</span> links in de tijdlijn welke schalen u wel of <br/> niet wilt weergeven in de tijdlijn.",
     "STEP_TWO_HALF_CIRCLE_MSG": "2",
     /* Step 3 */
-    "STEP_THREE_MESSAGE": "<span style='font-weight: bold'>Vergelijk</span> de kaarten met de transparantie slider.<br /><span style='font-weight: bold'>Herschik</span> de hierachie van de kaarten door ze boven of onder elkaar te slepen.",
+    "STEP_THREE_MESSAGE": "<span style='font-weight: bold'>Vergelijk</span> de kaarten met de transparantie slider.<br /><span style='font-weight: bold'>Herschik</span> de hiërarchie van de kaarten door ze <br/> boven of onder elkaar te slepen.",
     "STEP_THREE_HALF_CIRCLE_MSG": "3",
     /* Half circle */
     "HALF_CIRCLE_BACKGROUND_COLOR": "#0073958a",
@@ -87,11 +87,11 @@ var Config = {
     /* Use the following X and Y if using a basemap in RD_New projection.
     Enable the center: centerpoint and the extent parameters
     within the basemap function in main.js. Disable the center:[_lat,_long} paramter]*/
-    "BASEMAP_INIT_X": 187727,
-    "BASEMAP_INIT_Y": 428933,
+    "BASEMAP_INIT_X": 212423,
+    "BASEMAP_INIT_Y": 454492,
 
     /*Set the base zoom level at which the basemap loads in*/
-    "BASEMAP_INIT_ZOOM": 6,
+    "BASEMAP_INIT_ZOOM": 3,
     /**************************************************************************
      *
      * Map click crosshair
@@ -120,39 +120,46 @@ var Config = {
 
     "TIMELINE_LEGEND_VALUES": [
         {
+            "label": "100 000+",
+            "value": 500000,
+            "color": "#004C99",
+            "className": "six",
+            "lodThreshold": 3
+          },
+        {
             "label": "50 000 - 100 000",
             "value": 100000,
-            "color": "rgb(0, 102, 204)",
+            "color": "#0066CC",
             "className": "five",
-            "lodThreshold": 6
+            "lodThreshold": 4
         },
         {
             "label": "25 000 - 50 000",
             "value": 50000,
-            "color": "rgb(0, 128, 255)",
+            "color": "#0080FF",
             "className": "four",
-            "lodThreshold": 7
-        },
+            "lodThreshold": 5
+                  },
         {
             "label": "10 000 - 25 000",
             "value": 25000,
-            "color": "rgb(51, 153, 255)",
+            "color": "#3399FF",
             "className": "three",
-            "lodThreshold": 8
+            "lodThreshold": 6
         },
         {
             "label": "5 000 - 10 000",
             "value": 10000,
-            "color": "rgb(102, 178, 255)",
+            "color": "#66B2FF",
             "className": "two",
-            "lodThreshold": 9
+            "lodThreshold": 7
         },
         {
             "label": "1 - 5 000",
             "value": 5000,
-            "color": "rgb(153, 204, 255)",
+            "color": "#99CCFF",
             "className": "one",
-            "lodThreshold": 10
+            "lodThreshold": 8
         }
     ],
 
@@ -186,7 +193,7 @@ var Config = {
     /* minimum date onLoad */
     "TIMELINE_MIN_DATE": '1800',
     /* maximum date onLoad */
-    "TIMELINE_MAX_DATE": '2015',
+    "TIMELINE_MAX_DATE": '2050',
     /* steps between labels */
     "TIMELINE_STEP": 10,
     /* When true, events are moved animated when resizing or moving them. This is very pleasing for the eye, but does
@@ -204,7 +211,7 @@ var Config = {
     "IMAGE_SERVER_JSON": "?culture=en&f=json&token=",
 
     /* Image service */
-    "IMAGE_SERVER": "",
+    "IMAGE_SERVER": "https://edemo6.esri.nl/server/rest/services/Topotijdreis/TTR_WTOPRASTER/ImageServer",
     /* outfields */
     "OUTFIELDS": ['*'],
     /* WHERE clause */
@@ -222,15 +229,15 @@ var Config = {
     /* OBJECTID -- DO NOT modify this field --- */
     "ATTRIBUTE_OBJECTID": "OBJECTID",
     /* Name of map displayed */
-    "ATTRIBUTE_MAP_NAME": "Map_Name",
+    "ATTRIBUTE_MAP_NAME": "Naam_Kaart",
     /* Date field (UTC format) */
-    "ATTRIBUTE_DATE": "Date_Curren",
+    "ATTRIBUTE_DATE": "Jaar_Kaart",
     /* Scale field */
-    "ATTRIBUTE_SCALE": "Map_Scale",
+    "ATTRIBUTE_SCALE": "Schaal_Ka",
     /* Tooltip content */
     "TOOLTIP_CONTENT": "",
     /* Download map link */
-    "ATTRIBUTE_DOWNLOAD_LINK": "Downl_Link",
+    "ATTRIBUTE_DOWNLOAD_LINK": "Dlink",
     /* Map citation <String> or <attribute field> */
     "ATTRIBUTE_CITATION": "Citation",
 
@@ -242,8 +249,8 @@ var Config = {
 
     "EXTENT_EXPAND": 0.60,
 
-    "ZOOM_LEVEL_THRESHOLD": 2,
-    "THUMBNAIL_VISIBLE_THRESHOLD": 2,
+    "ZOOM_LEVEL_THRESHOLD": 8,
+    "THUMBNAIL_VISIBLE_THRESHOLD": 12,
     "THUMBNAIL_VISIBLE_THRESHOLD_MSG": "Zoom verder in om de kaart weer te geven",
 
     /**************************************************************************
