@@ -124,42 +124,42 @@ var Config = {
             "value": 500000,
             "color": "#004C99",
             "className": "six",
-            "lodThreshold": 3
+            "lodThreshold": 6
           },
         {
             "label": "50 000 - 100 000",
             "value": 100000,
             "color": "#0066CC",
             "className": "five",
-            "lodThreshold": 4
+            "lodThreshold": 7
         },
         {
             "label": "25 000 - 50 000",
             "value": 50000,
             "color": "#0080FF",
             "className": "four",
-            "lodThreshold": 5
+            "lodThreshold": 8
                   },
         {
             "label": "10 000 - 25 000",
             "value": 25000,
             "color": "#3399FF",
             "className": "three",
-            "lodThreshold": 6
+            "lodThreshold": 9
         },
         {
             "label": "5 000 - 10 000",
             "value": 10000,
             "color": "#66B2FF",
             "className": "two",
-            "lodThreshold": 7
+            "lodThreshold": 10
         },
         {
             "label": "1 - 5 000",
             "value": 5000,
             "color": "#99CCFF",
             "className": "one",
-            "lodThreshold": 8
+            "lodThreshold": 11
         }
     ],
 

@@ -757,8 +757,8 @@ require([
 
         function thumbnailRenderCell(object, data, td, options) {
             var objID = object.objID;
-            var mapName = object.name;
-            var imprintYear = object.imprintYear;
+            var mapName = object.Map_Name;
+            var imprintYear = object.DateCurrent;
             var downloadLink = object.downloadLink;
             var imgSrc = Config.IMAGE_SERVER + "/" + objID + Config.INFO_THUMBNAIL;
 
