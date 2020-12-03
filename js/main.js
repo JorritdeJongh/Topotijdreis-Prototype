@@ -176,6 +176,7 @@ require([
                 {
                     label: " ",
                     field: "objID",
+                    hidden: true
                 },
                 {
                     label: " ",
@@ -756,8 +757,8 @@ require([
 
         function thumbnailRenderCell(object, data, td, options) {
             var objID = object.objID;
-            let mapName = object.name;
-            let imprintYear = object.imprintYear;
+            var mapName = object.name;
+            var imprintYear = object.imprintYear;
             var downloadLink = object.downloadLink;
             var imgSrc = Config.IMAGE_SERVER + "/" + objID + Config.INFO_THUMBNAIL;
 
@@ -1302,14 +1303,19 @@ require([
         }
 
         function initGeocoderDijit(srcRef) {
+            var geocoders = [{
+              url: Config.GEOCODER_URL,
+              name: Config.GEOCODER_NAME,
+              singleLineFieldName: Config.GEOCODER_SINGLE_LINE_FIELD_NAME,
+              placeholder: Config.GEOCODER_PLACEHOLDER_TEXT
+            }];
             var geocoder = new Geocoder({
                 map: map,
+                geocoders: geocoders,
                 autoComplete: true,
                 showResults: true,
-                searchDelay: 250,
-                arcgisGeocoder: {
-                    placeholder: Config.GEOCODER_PLACEHOLDER_TEXT
-                }
+                searchDelay: 100,
+                arcgisGeocoder: Config.arcgisGeocoder
             }, srcRef);
             geocoder.startup();
         }

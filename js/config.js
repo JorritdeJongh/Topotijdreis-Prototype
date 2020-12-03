@@ -106,8 +106,17 @@ var Config = {
      * Geocoder Dijit
      *
      **************************************************************************/
-    "GEOCODER_PLACEHOLDER_TEXT": "Zoek een plaats door hier te typen",
 
+     /*
+     Use the following lines to specify a custom locator service, its name and its placeholder text. */
+    "GEOCODER_URL": "https://services.arcgisonline.nl/arcgis/rest/services/Geocoder_BAG_RD/GeocodeServer",
+    "GEOCODER_NAME": "BAG_RD_NEW",
+    "GEOCODER_SINGLE_LINE_FIELD_NAME": "SingleLine",
+    "GEOCODER_PLACEHOLDER_TEXT": "Zoek een plaats door hier te typen",
+    /*
+    If you desire to use the ArcGIS global geocoder, disable the custom locator in the main.js file and set following statement to true */
+
+    "arcgisGeocoder": false,
     /**************************************************************************
      *
      * Timeline Container
@@ -211,7 +220,7 @@ var Config = {
     "IMAGE_SERVER_JSON": "?culture=en&f=json&token=",
 
     /* Image service */
-    "IMAGE_SERVER": "https://edemo6.esri.nl/server/rest/services/Topotijdreis/TTR_WTOPRASTER/ImageServer",
+    "IMAGE_SERVER": "https://edemo6.esri.nl/server/rest/services/Topotijdreis/DownloadTest/ImageServer",
     /* outfields */
     "OUTFIELDS": ['*'],
     /* WHERE clause */
@@ -229,15 +238,15 @@ var Config = {
     /* OBJECTID -- DO NOT modify this field --- */
     "ATTRIBUTE_OBJECTID": "OBJECTID",
     /* Name of map displayed */
-    "ATTRIBUTE_MAP_NAME": "Naam_Kaart",
+    "ATTRIBUTE_MAP_NAME": "NameOnMap",
     /* Date field (UTC format) */
-    "ATTRIBUTE_DATE": "Jaar_Kaart",
+    "ATTRIBUTE_DATE": "YearOnMap",
     /* Scale field */
-    "ATTRIBUTE_SCALE": "Schaal_Ka",
+    "ATTRIBUTE_SCALE": "ScaleOnMap",
     /* Tooltip content */
     "TOOLTIP_CONTENT": "",
     /* Download map link */
-    "ATTRIBUTE_DOWNLOAD_LINK": "Dlink",
+    "ATTRIBUTE_DOWNLOAD_LINK": "DLink",
     /* Map citation <String> or <attribute field> */
     "ATTRIBUTE_CITATION": "Citation",
 
