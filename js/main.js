@@ -176,7 +176,6 @@ require([
                 {
                     label: " ",
                     field: "objID",
-                    hidden: true
                 },
                 {
                     label: " ",
@@ -757,8 +756,8 @@ require([
 
         function thumbnailRenderCell(object, data, td, options) {
             var objID = object.objID;
-            var mapName = object.Map_Name;
-            var imprintYear = object.DateCurrent;
+            let mapName = object.name;
+            let imprintYear = object.imprintYear;
             var downloadLink = object.downloadLink;
             var imgSrc = Config.IMAGE_SERVER + "/" + objID + Config.INFO_THUMBNAIL;
 
@@ -766,7 +765,7 @@ require([
                 "class": "renderedCell",
                 "innerHTML": "<button class='rm-layer-btn' data-objectid='" + objID + "'> X </button>" +
                     "<img class='rm-layer-icon' src='" + imgSrc + "'>" +
-                    "<div class='thumbnailMapName' data-mapname-objectid='" + objID + "'>" + mapName + "</div>" +
+                    "<div class='thumbnailMapName' data-mapName-objectid='" + objID + "'>" + mapName + "</div>" +
                     "<div class='thumbnailMapImprintYear'>" + imprintYear + "</div>" +
                     "<div class='downloadLink'><a href='" + downloadLink + "' target='_parent'>Download deze kaart</a></div>" +
                     "<div class='TransSlider'>" + "Gebruik de slider hieronder om de transparantie aan te passen" + "</div>",
