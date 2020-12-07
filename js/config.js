@@ -125,52 +125,46 @@ var Config = {
     /* container background color */
     "TIMELINE_CONTAINER_BACKGROUND_COLOR": "rgba(204, 255, 255, 0.2)",
     /* legend header */
-    "TIMELINE_LEGEND_HEADER": "Beschikbare Schalen",
+    "TIMELINE_LEGEND_HEADER": "Beschikbare schaalniveau's",
 
-    "TIMELINE_LEGEND_VALUES": [
-        {
-            "label": "100 000+",
-            "value": 499999,
-            "color": "#004C99",
-            "className": "six",
-            "lodThreshold": 4
-          },
-        {
-            "label": "50 000 - 100 000",
-            "value": 99999,
-            "color": "#0066CC",
-            "className": "five",
-            "lodThreshold": 5
-        },
-        {
-            "label": "25 000 - 50 000",
-            "value": 49999,
-            "color": "#0080FF",
-            "className": "four",
-            "lodThreshold": 6
-                  },
-        {
-            "label": "10 000 - 25 000",
-            "value": 24999,
-            "color": "#3399FF",
-            "className": "three",
-            "lodThreshold": 8
-        },
-        {
-            "label": "5 000 - 10 000",
-            "value": 9999,
-            "color": "#66B2FF",
-            "className": "two",
-            "lodThreshold": 9
-        },
-        {
-            "label": "1 - 5 000",
-            "value": 4999,
-            "color": "#99CCFF",
-            "className": "one",
-            "lodThreshold": 10
-        }
-    ],
+
+        "TIMELINE_LEGEND_VALUES": [
+            {
+                "label": "250,000",
+                "value": 250000,
+                "color": "#0054ff",
+                "className": "five",
+                "lodThreshold": 5
+            },
+            {
+                "label": "100,000",
+                "value": 100000,
+                "color": "#0076FF",
+                "className": "four",
+                "lodThreshold": 6
+            },
+            {
+                "label": "50,000",
+                "value": 50000,
+                "color": "#00c3ff",
+                "className": "three",
+                "lodThreshold": 7
+            },
+            {
+                "label": "25,000",
+                "value": 25000,
+                "color": "#00f9ff",
+                "className": "two",
+                "lodThreshold": 8
+            },
+            {
+                "label": "10,000",
+                "value": 10000,
+                "color": "#00ffac",
+                "className": "one",
+                "lodThreshold": 9
+            }
+        ],
 
     /* Timeline disabled message (Msg displayed when user zooms too far out) */
     "TIMELINE_DISABLED_MESSAGE": "Zoom verder in om de tijdlijn te activeren",
@@ -220,7 +214,7 @@ var Config = {
     "IMAGE_SERVER_JSON": "?culture=en&f=json&token=",
 
     /* Image service */
-    "IMAGE_SERVER": "https://edemo6.esri.nl/server/rest/services/Topotijdreis/DownloadTest/ImageServer",
+    "IMAGE_SERVER": "https://edemo6.esri.nl/server/rest/services/Topotijdreis/TopoServer/ImageServer",
     /* outfields */
     "OUTFIELDS": ['*'],
     /* WHERE clause */
@@ -246,7 +240,7 @@ var Config = {
     /* Tooltip content */
     "TOOLTIP_CONTENT": "",
     /* Download map link */
-    "ATTRIBUTE_DOWNLOAD_LINK": "DLink",
+    "ATTRIBUTE_DOWNLOAD_LINK": "Dlink",
     /* Map citation <String> or <attribute field> */
     "ATTRIBUTE_CITATION": "Citation",
 
@@ -259,7 +253,7 @@ var Config = {
     "EXTENT_EXPAND": 0.60,
 
     "ZOOM_LEVEL_THRESHOLD": 6,
-    "THUMBNAIL_VISIBLE_THRESHOLD": 6,
+    "THUMBNAIL_VISIBLE_THRESHOLD": 3,
     "THUMBNAIL_VISIBLE_THRESHOLD_MSG": "Zoom verder in om de kaart weer te geven",
 
     /**************************************************************************

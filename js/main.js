@@ -202,6 +202,8 @@ require([
                 columns: columns,
                 showHeader: false,
                 selectionMode: "single",
+                sortable: true,
+                allowSorting: true,
                 dndParams: {
                     singular: true
                 },
@@ -389,178 +391,354 @@ require([
             }
         }
 
-        function buildLegend(legendItem) {
-            // TODO Change from topo-legend to timeline-legend
-            var legendNode = query(".topo-legend")[0];
-            var node = domConstruct.toDom('<label data-scale="' + legendItem.value + '" data-placement="right" class="btn toggle-scale active" style="background-color: ' + legendItem.color + '">' +
-                '<input type="checkbox" name="options"><span data-scale="' + legendItem.value + '">' + legendItem.label + '</span>' +
-                '</label>');
+                function buildLegend(legendItem) {
+                    // TODO Change from topo-legend to timeline-legend
+                    var legendNode = query(".topo-legend")[0];
+                    var node = domConstruct.toDom('<label data-scale="' + legendItem.value + '" data-placement="right" class="btn toggle-scale active" style="background-color: ' + legendItem.color + '">' +
+                        '<input type="checkbox" name="options"><span data-scale="' + legendItem.value + '">' + legendItem.label + '</span>' +
+                        '</label>');
 
-            if (urlQueryObject) {
-                var _tmpFilters = urlQueryObject.f.split("|");
-                var num = number.format(legendItem.value, {
-                    places: 0,
-                    pattern: "#"
-                });
-                var i = _tmpFilters.indexOf(num);
-                if (_tmpFilters[i] !== undefined) {
-                    domClass.toggle(node, "sel");
-                    domStyle.set(node, "opacity", "0.3");
-                    filter.push(_tmpFilters[i]);
-                } else {
-                    //
-                }
-            }
-
-            on(node, "click", function (evt) {
-                var selectedScale = evt.target.getAttribute("data-scale");
-                domClass.toggle(this, "sel");
-                if (domClass.contains(this, "sel")) {
-                    var j = filter.indexOf(selectedScale);
-                    if (j === -1) {
-                        filter.push(selectedScale);
+                    if (urlQueryObject) {
+                        var _tmpFilters = urlQueryObject.f.split("|");
+                        var num = number.format(legendItem.value, {
+                            places: 0,
+                            pattern: "#"
+                        });
+                        var i = _tmpFilters.indexOf(num);
+                        if (_tmpFilters[i] !== undefined) {
+                            domClass.toggle(node, "sel");
+                            domStyle.set(node, "opacity", "0.3");
+                            filter.push(_tmpFilters[i]);
+                        } else {
+                            //
+                        }
                     }
-                    domStyle.set(this, "opacity", "0.3");
-                    filterSelection.push(selectedScale);
-                } else {
-                    var k = filter.indexOf(selectedScale);
-                    if (k !== -1) {
-                        filter.splice(k, 1);
-                    }
-                    domStyle.set(this, "opacity", "1.0");
-                    var i = filterSelection.indexOf(selectedScale);
-                    if (i != -1) {
-                        filterSelection.splice(i, 1);
-                    }
-                }
-                drawTimeline(timelineData);
-            });
-            domConstruct.place(node, legendNode);
-        }
 
-        function watchSplitters(bc) {
-            var timelineContainerNode = dom.byId("timeline-container");
-            array.forEach(["bottom"], function (region) {
-                var spl = bc.getSplitter(region);
-                aspect.after(spl, "_startDrag", function () {
-                    domStyle.set(spl.child.domNode, "opacity", "0.4");
-                });
-                aspect.after(spl, "_stopDrag", function () {
-                    domStyle.set(spl.child.domNode, "opacity", "1.0");
-                    // TODO Timeline height needs to be resized accordingly
-                    var node = dom.byId("timeline-container");
-                    timelineContainerNodeGeom = domStyle.getComputedStyle(timelineContainerNode);
-                    timelineContainerGeometry = domGeom.getContentBox(node, timelineContainerNodeGeom);
-                    drawTimeline(timelineData);
-                });
-            });
-        }
-
-
-        function getUrlParameters() {
-            var urlObject = urlUtils.urlToObject(window.location.href);
-            return urlObject.query;
-        }
-
-        function filterData(dataToFilter, filter) {
-            var _filteredData = [];
-            var exclude = false;
-            var nFilters = filter.length;
-
-            if (nFilters > 0) {
-                var mapScaleValues = [];
-                for (var i = 0; i < TOPO_MAP_SCALES.length; i++) {
-                    mapScaleValues.push(TOPO_MAP_SCALES[i].value);
+                    on(node, "click", function (evt) {
+                        var selectedScale = evt.target.getAttribute("data-scale");
+                        domClass.toggle(this, "sel");
+                        if (domClass.contains(this, "sel")) {
+                            var j = filter.indexOf(selectedScale);
+                            if (j === -1) {
+                                filter.push(selectedScale);
+                            }
+                            domStyle.set(this, "opacity", "0.3");
+                            filterSelection.push(selectedScale);
+                        } else {
+                            var k = filter.indexOf(selectedScale);
+                            if (k !== -1) {
+                                filter.splice(k, 1);
+                            }
+                            domStyle.set(this, "opacity", "1.0");
+                            var i = filterSelection.indexOf(selectedScale);
+                            if (i != -1) {
+                                filterSelection.splice(i, 1);
+                            }
+                        }
+                        drawTimeline(timelineData);
+                    });
+                    domConstruct.place(node, legendNode);
                 }
 
-                array.forEach(dataToFilter, function (item) {
-                    // loop through each filter
-                    for (var i = 0; i < nFilters; i++) {
-                        var _filterScale = number.parse(filter[i]);
-                        var _mapScale = item.scale;
-                        var _pos = array.indexOf(mapScaleValues, _filterScale);
-                        var _lowerBoundScale;
-                        var _upperBoundScale;
-                        var current;
+                function watchSplitters(bc) {
+                    var timelineContainerNode = dom.byId("timeline-container");
+                    array.forEach(["bottom"], function (region) {
+                        var spl = bc.getSplitter(region);
+                        aspect.after(spl, "_startDrag", function () {
+                            domStyle.set(spl.child.domNode, "opacity", "0.4");
+                        });
+                        aspect.after(spl, "_stopDrag", function () {
+                            domStyle.set(spl.child.domNode, "opacity", "1.0");
+                            // TODO Timeline height needs to be resized accordingly
+                            var node = dom.byId("timeline-container");
+                            timelineContainerNodeGeom = domStyle.getComputedStyle(timelineContainerNode);
+                            timelineContainerGeometry = domGeom.getContentBox(node, timelineContainerNodeGeom);
+                            drawTimeline(timelineData);
+                        });
+                    });
+                }
 
-                        if (_pos !== -1) {
-                            if (
-                              [_pos + 1] !== undefined) {
-                                _lowerBoundScale = TOPO_MAP_SCALES[(_pos + 1)].value;
+
+                function getUrlParameters() {
+                    var urlObject = urlUtils.urlToObject(window.location.href);
+                    return urlObject.query;
+                }
+
+                function filterData(dataToFilter, filter) {
+                    var _filteredData = [];
+                    var exclude = false;
+                    var nFilters = filter.length;
+
+                    if (nFilters > 0) {
+                        var mapScaleValues = [];
+                        for (var i = 0; i < TOPO_MAP_SCALES.length; i++) {
+                            mapScaleValues.push(TOPO_MAP_SCALES[i].value);
+                        }
+
+                        array.forEach(dataToFilter, function (item) {
+                            // loop through each filter
+                            for (var i = 0; i < nFilters; i++) {
+                                var _filterScale = number.parse(filter[i]);
+                                var _mapScale = item.scale;
+                                var _pos = array.indexOf(mapScaleValues, _filterScale);
+                                var _lowerBoundScale;
+                                var _upperBoundScale;
+                                var current;
+
+                                if (_pos !== -1) {
+                                    if (TOPO_MAP_SCALES[_pos + 1] !== undefined) {
+                                        _lowerBoundScale = TOPO_MAP_SCALES[(_pos + 1)].value;
+                                    } else {
+                                        _lowerBoundScale = "";
+                                    }
+
+                                    if (TOPO_MAP_SCALES[_pos].value) {
+                                        current = TOPO_MAP_SCALES[_pos].value;
+                                    }
+
+                                    if (TOPO_MAP_SCALES[(_pos - 1)] !== undefined) {
+                                        _upperBoundScale = TOPO_MAP_SCALES[(_pos)].value;
+                                    } else {
+                                        _upperBoundScale = "";
+                                    }
+                                }
+
+                                if (_lowerBoundScale === "") {
+                                    if (_mapScale <= _filterScale) {
+                                        exclude = true;
+                                        break;
+                                    }
+                                }
+
+                                if (_upperBoundScale === "") {
+                                    if (_mapScale >= _filterScale) {
+                                        exclude = true;
+                                        break;
+                                    }
+                                }
+
+                                if (_lowerBoundScale !== "" && _upperBoundScale !== "") {
+                                    if (_mapScale > _lowerBoundScale && _mapScale <= _upperBoundScale) {
+                                        exclude = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!exclude) {
+                                _filteredData.push(item);
+                            }
+                            exclude = false;
+                        });
+                        return _filteredData;
+                    } else {
+                        return dataToFilter;
+                    }
+                }
+
+                function runQuery(mapExtent, mp, lod) {
+                    var timelineContainerNode = dom.byId("timeline-container");
+                    var queryTask = new QueryTask(Config.IMAGE_SERVER);
+                    var q = new Query();
+                    q.returnGeometry = true;
+                    q.outFields = Config.OUTFIELDS;
+                    q.spatialRelationship = Query.SPATIAL_REL_INTERSECTS;
+                    q.where = Config.QUERY_WHERE;
+                    if (Config.QUERY_WHERE !== "") {
+                        q.where = Config.QUERY_WHERE;
+                    }
+                    if (Config.QUERY_GEOMETRY === "MAP_POINT") {
+                        q.geometry = mp;
+                    } else {
+                        q.geometry = mapExtent.expand(Config.EXTENT_EXPAND);
+                    }
+
+                    showLoadingIndicator();
+                    var deferred = queryTask.execute(q).addCallback(function (response) {
+                        timelineData = [];
+                        var nFeatures = response.features.length;
+
+                        if (nFeatures > 0) {
+                            query(".timeline-mask").forEach(domConstruct.destroy);
+                            timelineContainerNodeGeom = domStyle.getComputedStyle(timelineContainerNode);
+                            timelineContainerGeometry = domGeom.getContentBox(timelineContainerNode, timelineContainerNodeGeom);
+                            if (timelineContainerGeometry.h === 0) {
+                                var n = registry.byId("timeline-container").domNode;
+                                fx.animateProperty({
+                                    node: n,
+                                    duration: 1000,
+                                    properties: {
+                                        height: {
+                                            end: 250
+                                        }
+                                    },
+                                    onEnd: function () {
+                                        registry.byId("main-window").layout();
+                                    }
+                                }).play();
+                            }
+
+                            array.forEach(response.features, function (feature) {
+                                var ext = feature.geometry.getExtent();
+                                var xmin = ext.xmin;
+                                var xmax = ext.xmax;
+                                var ymin = ext.ymin;
+                                var ymax = ext.ymax;
+
+                                var objID = feature.attributes[Config.ATTRIBUTE_OBJECTID];
+                                var mapName = feature.attributes[Config.ATTRIBUTE_MAP_NAME];
+                                var scale = feature.attributes[Config.ATTRIBUTE_SCALE];
+                                var dateCurrent = feature.attributes[Config.ATTRIBUTE_DATE];
+                                if (dateCurrent === null)
+                                    dateCurrent = Config.MSG_UNKNOWN;
+                                var day = formatDay(dateCurrent);
+                                var month = formatMonth(dateCurrent);
+                                var year = formatYear(dateCurrent);
+                                var formattedDate = month + "/" + day + "/" + year;
+
+                                var startDate = new Date(dateCurrent, month, day);
+
+                                var downloadLink = feature.attributes[Config.ATTRIBUTE_DOWNLOAD_LINK];
+                                var citation = feature.attributes[Config.ATTRIBUTE_CITATION];
+                                var className = setClassname(scale);
+                                var lodThreshold = setLodThreshold(scale);
+
+                                var tooltipContent = "<img class='tooltipThumbnail' src='" + Config.IMAGE_SERVER + "/" + objID + Config.INFO_THUMBNAIL + "'>" +
+                                    "<div class='tooltipContainer'>" +
+                                    "<div class='tooltipHeader'>" + mapName + " (" + dateCurrent + ")</div>" +
+                                    "<div class='tooltipContent'>" + citation + "</div></div>";
+
+                                var timelineItemContent = '<div class="timelineItemTooltip noThumbnail" title="' + tooltipContent + '" data-xmin="' + xmin + '" data-ymin="' + ymin + '" data-xmax="' + xmax + '" data-ymax="' + ymax + '">' +
+                                    '<span class="thumbnailLabel">' + mapName + '</span>';
+
+                                timelineData.push({
+                                    "start": startDate,
+                                    "content": timelineItemContent,
+                                    "objID": objID,
+                                    "downloadLink": downloadLink,
+                                    "scale": scale,
+                                    "lodThreshold": lodThreshold,
+                                    "className": className
+                                });
+                            }); // END forEach
+                        } else {
+                            addNoResultsMask();
+                        } // END QUERY
+                        drawTimeline(timelineData);
+                    }); // END Deferred
+                }
+
+                function initUrlParamData(urlQueryObject) {
+                    if (esriLang.isDefined(urlQueryObject)) {
+                        if (esriLang.isDefined(urlQueryObject.selLat) && esriLang.isDefined(urlQueryObject.selLng)) {
+                            if (urlQueryObject.selLat !== "" && urlQueryObject.selLng !== "") {
+                                var selLat = urlQueryObject.selLat;
+                                var selLng = urlQueryObject.selLng;
+                                var mp = new Point([selLat, selLng], new SpatialReference({
+                                    wkid: 102100
+                                }));
+                                // add crosshair
+                                addCrosshair(mp);
+                                currentMapClickPoint = mp;
+                                currentLOD = map.getLevel();
+                                currentMapExtent = map.extent;
+
+                                if (urlQueryObject.oids.length > 0) {
+                                    var qt = new QueryTask(Config.IMAGE_SERVER);
+                                    var q = new Query();
+                                    q.returnGeometry = true;
+                                    q.outFields = Config.OUTFIELDS;
+                                    q.spatialRelationship = Query.SPATIAL_REL_INTERSECTS;
+                                    if (Config.QUERY_GEOMETRY === "MAP_POINT") {
+                                        q.geometry = currentMapClickPoint;
+                                    } else {
+                                        q.geometry = currentMapExtent.expand(Config.EXTENT_EXPAND);
+                                    }
+
+                                    var deferreds = [];
+                                    // we need to fire off a query for 'each' OID, not all at once
+                                    array.forEach(urlQueryObject.oids.split("|"), function (oid) {
+                                        q.where = "OBJECTID = " + oid;
+                                        var deferred = qt.execute(q).addCallback(function (rs) {
+                                            return rs.features[0];
+                                        });
+                                        deferreds.push(deferred);
+                                    });// END forEach
+
+                                    var layers = [];
+                                    all(deferreds).then(function (results) {
+                                        array.forEach(results, function (feature, index) {
+                                            var objID = feature.attributes.OBJECTID;
+                                            var mapName = feature.attributes[Config.ATTRIBUTE_MAP_NAME];
+                                            var extent = feature.geometry.getExtent();
+                                            var dateCurrent = feature.attributes[Config.ATTRIBUTE_DATE];
+
+                                            if (dateCurrent === undefined || dateCurrent === null || dateCurrent === "") {
+                                                dateCurrent = Config.MSG_UNKNOWN;
+                                            }
+
+                                            var scale = feature.attributes[Config.ATTRIBUTE_SCALE];
+                                            var scaleLabel = number.format(scale, {
+                                                places: 0
+                                            });
+                                            var lodThreshold = setLodThreshold(scale, Config.TIMELINE_LEGEND_VALUES, nScales, minScaleValue, maxScaleValue);
+
+                                            var mosaicRule = new MosaicRule({
+                                                "method": MosaicRule.METHOD_CENTER,
+                                                "ascending": true,
+                                                "operation": MosaicRule.OPERATION_FIRST,
+                                                "where": "OBJECTID = " + objID
+                                            });
+                                            var params = new ImageServiceParameters();
+                                            params.noData = 0;
+                                            params.mosaicRule = mosaicRule;
+                                            var imageServiceLayer = new ArcGISImageServiceLayer(Config.IMAGE_SERVER, {
+                                                imageServiceParameters: params,
+                                                opacity: 1.0
+                                            });
+                                            layers.push(imageServiceLayer);
+
+                                            store.put({
+                                                id: "1",
+                                                objID: objID,
+                                                layer: imageServiceLayer,
+                                                name: mapName,
+                                                imprintYear: dateCurrent,
+                                                scale: scale,
+                                                scaleLabel: scaleLabel,
+                                                lodThreshold: lodThreshold,
+                                                extent: extent
+                                            });
+                                        });// End forEach
+                                        return layers.reverse();
+                                    }).then(function (layers) {
+                                        array.forEach(layers, function (layer, index) {
+                                            map.addLayer(layer, index + 1);
+                                        });
+                                    });// END all
+
+                                    // expand height of timeline parent container
+                                    updateTimelineContainerHeight();
+                                    showGrid();
+                                    showStepThree();
+                                } else {
+                                    // user shared only lat/lng and no selected maps
+                                    showStepTwo();
+                                }
+                                runQuery(currentMapExtent, currentMapClickPoint);
                             } else {
-                                _lowerBoundScale = "";
+                                // user shared default url
                             }
-
-                            if (TOPO_MAP_SCALES[_pos].value) {
-                                current = TOPO_MAP_SCALES[_pos].value;
-                            }
-
-                            if (TOPO_MAP_SCALES[(_pos - 1)] !== undefined) {
-                                _upperBoundScale = TOPO_MAP_SCALES[(_pos)].value;
-                            } else {
-                                _upperBoundScale = "";
-                            }
-                        }
-
-                        if (_lowerBoundScale === "") {
-                            if (_mapScale <= _filterScale) {
-                                exclude = true;
-                                break;
-                            }
-                        }
-
-                        if (_upperBoundScale === "") {
-                            if (_mapScale >= _filterScale) {
-                                exclude = true;
-                                break;
-                            }
-                        }
-
-                        if (_lowerBoundScale !== "" && _upperBoundScale !== "") {
-                            if (_mapScale > _lowerBoundScale && _mapScale <= _upperBoundScale) {
-                                exclude = true;
-                                break;
-                            }
+                        } else {
+                            // user shared default url
                         }
                     }
+                }
 
-                    if (!exclude) {
-                        _filteredData.push(item);
-                    }
-                    exclude = false;
-                });
-                return _filteredData;
-            } else {
-                return dataToFilter;
-            }
-        }
-
-        function runQuery(mapExtent, mp, lod) {
-            var timelineContainerNode = dom.byId("timeline-container");
-            var queryTask = new QueryTask(Config.IMAGE_SERVER);
-            var q = new Query();
-            q.returnGeometry = true;
-            q.outFields = Config.OUTFIELDS;
-            q.spatialRelationship = Query.SPATIAL_REL_INTERSECTS;
-            q.where = Config.QUERY_WHERE;
-            if (Config.QUERY_WHERE !== "") {
-                q.where = Config.QUERY_WHERE;
-            }
-            if (Config.QUERY_GEOMETRY === "MAP_POINT") {
-                q.geometry = mp;
-            } else {
-                q.geometry = mapExtent.expand(Config.EXTENT_EXPAND);
-            }
-
-            showLoadingIndicator();
-            var deferred = queryTask.execute(q).addCallback(function (response) {
-                timelineData = [];
-                var nFeatures = response.features.length;
-
-                if (nFeatures > 0) {
-                    query(".timeline-mask").forEach(domConstruct.destroy);
-                    timelineContainerNodeGeom = domStyle.getComputedStyle(timelineContainerNode);
-                    timelineContainerGeometry = domGeom.getContentBox(timelineContainerNode, timelineContainerNodeGeom);
+                function updateTimelineContainerHeight() {
+                    var timelineContainerNode = dom.byId("timeline-container");
+                    var timelineContainerNodeGeom = domStyle.getComputedStyle(timelineContainerNode);
+                    var timelineContainerGeometry = domGeom.getContentBox(timelineContainerNode, timelineContainerNodeGeom);
                     if (timelineContainerGeometry.h === 0) {
                         var n = registry.byId("timeline-container").domNode;
                         fx.animateProperty({
@@ -568,7 +746,7 @@ require([
                             duration: 1000,
                             properties: {
                                 height: {
-                                    end: 250
+                                    end: parseInt(Config.TIMELINE_HEIGHT) + 20
                                 }
                             },
                             onEnd: function () {
@@ -576,644 +754,465 @@ require([
                             }
                         }).play();
                     }
+                }
 
-                    array.forEach(response.features, function (feature) {
-                        var ext = feature.geometry.getExtent();
-                        var xmin = ext.xmin;
-                        var xmax = ext.xmax;
-                        var ymin = ext.ymin;
-                        var ymax = ext.ymax;
 
-                        var objID = feature.attributes[Config.ATTRIBUTE_OBJECTID];
-                        var mapName = feature.attributes[Config.ATTRIBUTE_MAP_NAME];
-                        var scale = feature.attributes[Config.ATTRIBUTE_SCALE];
-                        var dateCurrent = feature.attributes[Config.ATTRIBUTE_DATE];
-                        if (dateCurrent === null)
-                            dateCurrent = Config.MSG_UNKNOWN;
-                        var day = formatDay(dateCurrent);
-                        var month = formatMonth(dateCurrent);
-                        var year = formatYear(dateCurrent);
-                        var formattedDate = month + "/" + day + "/" + year;
+                function thumbnailRenderCell(object, data, td, options) {
+                    var objID = object.objID;
+                    var mapName = object.name;
+                    var imprintYear = object.imprintYear;
+                    var downloadLink = object.downloadLink;
+                    var imgSrc = Config.IMAGE_SERVER + "/" + objID + Config.INFO_THUMBNAIL;
 
-                        var startDate = new Date(dateCurrent, month, day);
+                    return domConstruct.create("div", {
+                        "class": "renderedCell",
+                        "innerHTML": "<button class='rm-layer-btn' data-objectid='" + objID + "'> X </button>" +
+                            "<img class='rm-layer-icon' src='" + imgSrc + "'>" +
+                            "<div class='thumbnailMapName' data-mapname-objectid='" + objID + "'>" + mapName + objID + "</div>" +
+                            "<div class='thumbnailMapImprintYear'>" + imprintYear + "</div>" +
+                            "<div class='downloadLink'><a href='" + downloadLink + "' target='_parent'>Download deze kaart</a></div>",
+                        onclick: function (evt) {
+                            var objID = evt.target.getAttribute("data-objectid");
+                            var storeObj = store.query({
+                                objID: objID
+                            });
 
-                        var downloadLink = feature.attributes[Config.ATTRIBUTE_DOWNLOAD_LINK];
-                        var citation = feature.attributes[Config.ATTRIBUTE_CITATION];
-                        var className = setClassname(scale);
-                        var lodThreshold = setLodThreshold(scale);
-
-                        var tooltipContent = "<img class='tooltipThumbnail' src='" + Config.IMAGE_SERVER + "/" + objID + Config.INFO_THUMBNAIL + "'>" +
-                            "<div class='tooltipContainer'>" +
-                            "<div class='tooltipHeader'>" + mapName + " (" + dateCurrent + ")</div>" +
-                            "<div class='tooltipContent'>" + citation + "</div></div>";
-
-                        var timelineItemContent = '<div class="timelineItemTooltip noThumbnail" title="' + tooltipContent + '" data-xmin="' + xmin + '" data-ymin="' + ymin + '" data-xmax="' + xmax + '" data-ymax="' + ymax + '">' +
-                            '<span class="thumbnailLabel">' + mapName + '</span>';
-
-                        timelineData.push({
-                            "start": startDate,
-                            "content": timelineItemContent,
-                            "objID": objID,
-                            "downloadLink": downloadLink,
-                            "scale": scale,
-                            "lodThreshold": lodThreshold,
-                            "className": className
-                        });
-                    }); // END forEach
-                } else {
-                    addNoResultsMask();
-                } // END QUERY
-                drawTimeline(timelineData);
-            }); // END Deferred
-        }
-
-        function initUrlParamData(urlQueryObject) {
-            if (esriLang.isDefined(urlQueryObject)) {
-                if (esriLang.isDefined(urlQueryObject.selLat) && esriLang.isDefined(urlQueryObject.selLng)) {
-                    if (urlQueryObject.selLat !== "" && urlQueryObject.selLng !== "") {
-                        var selLat = urlQueryObject.selLat;
-                        var selLng = urlQueryObject.selLng;
-                        var mp = new Point([selLat, selLng], new SpatialReference({
-                            wkid: 102100
-                        }));
-                        // add crosshair
-                        addCrosshair(mp);
-                        currentMapClickPoint = mp;
-                        currentLOD = map.getLevel();
-                        currentMapExtent = map.extent;
-
-                        if (urlQueryObject.oids.length > 0) {
-                            var qt = new QueryTask(Config.IMAGE_SERVER);
-                            var q = new Query();
-                            q.returnGeometry = true;
-                            q.outFields = Config.OUTFIELDS;
-                            q.spatialRelationship = Query.SPATIAL_REL_INTERSECTS;
-                            if (Config.QUERY_GEOMETRY === "MAP_POINT") {
-                                q.geometry = currentMapClickPoint;
-                            } else {
-                                q.geometry = currentMapExtent.expand(Config.EXTENT_EXPAND);
-                            }
-
-                            var deferreds = [];
-                            // we need to fire off a query for 'each' OID, not all at once
-                            array.forEach(urlQueryObject.oids.split("|"), function (oid) {
-                                q.where = "OBJECTID = " + oid;
-                                var deferred = qt.execute(q).addCallback(function (rs) {
-                                    return rs.features[0];
+                            if (calcite.hasClass(evt.target, "thumbnailMapName")) {
+                                var qt = new QueryTask(Config.IMAGE_SERVER);
+                                var q = new Query();
+                                q.returnGeometry = false;
+                                q.outFields = Config.OUTFIELDS;
+                                q.where = "OBJECTID = " + evt.target.getAttribute("data-mapname-objectid");
+                                qt.execute(q).addCallback(function (response) {
+                                    var feature = response.features[0].attributes;
+                                    domConstruct.create("div", {
+                                        "id": "grid-item-tooltip",
+                                        "style": {
+                                            left: 205 + "px",
+                                            top: evt.clientY + "px"
+                                        },
+                                        "innerHTML": "<div class='btn btn-small btn-transparent icon-ui-close-circled icon-ui-gray padding-left-0 padding-right-0 padding-trailer-0 padding-leader-0'></div>" + feature.Citation,
+                                        "onclick": function (evt) {
+                                            if (evt.target.getAttribute("class")) {
+                                                domConstruct.destroy("grid-item-tooltip");
+                                            }
+                                        }
+                                    }, win.body(), "first");
                                 });
-                                deferreds.push(deferred);
-                            });// END forEach
 
-                            var layers = [];
-                            all(deferreds).then(function (results) {
-                                array.forEach(results, function (feature, index) {
-                                    var objID = feature.attributes.OBJECTID;
-                                    var mapName = feature.attributes[Config.ATTRIBUTE_MAP_NAME];
-                                    var extent = feature.geometry.getExtent();
-                                    var dateCurrent = feature.attributes[Config.ATTRIBUTE_DATE];
+                            } else {
+                                map.removeLayer(storeObj[0].layer);
+                                store.remove(objID);
+                                if (store.data.length < 1) {
+                                    // no remaining items in the grid/store
+                                    map.graphics.remove(mouseOverGraphic);
+                                    map.graphics.clear();
+                                    addCrosshair(currentMapClickPoint);
+                                    hideLoadingIndicator();
+                                    showStepTwo();
+                                }
+                            }
+                        }
+                    });
+                }
 
-                                    if (dateCurrent === undefined || dateCurrent === null || dateCurrent === "") {
-                                        dateCurrent = Config.MSG_UNKNOWN;
+                function drawTimeline(data) {
+                    var filteredData = filterData(data, filter);
+                    topic.subscribe("/dnd/drop", function (source, nodes, copy, target) {
+                        var layers = [];
+                        query(".grid-map").forEach(domConstruct.destroy);
+                        query(".dgrid-row").forEach(function (node) {
+                            var row = target.grid.row(node);
+                            if (row) {
+                                layers.push(row.data.layer);
+                                map.removeLayer(row.data.layer);
+
+                                var lodThreshold = row.data.lodThreshold;
+                                var maskId = domAttr.get(node, "id") + "-mask";
+                                if (currentLOD <= lodThreshold) {
+                                    // disable row
+                                    if (dom.byId("" + maskId) === null) {
+                                        domConstruct.create("div", {
+                                            "id": "" + maskId,
+                                            "class": "grid-map",
+                                            "innerHTML": "<p style='text-align: center; margin-top: 20px'>" + Config.THUMBNAIL_VISIBLE_THRESHOLD_MSG + "</p>"
+                                        }, node, "first");
                                     }
+                                } else {
+                                    // enable row
+                                    domConstruct.destroy("" + maskId);
+                                }
+                            }
+                        });
 
-                                    var scale = feature.attributes[Config.ATTRIBUTE_SCALE];
+                        var j = layers.length;
+                        while (j >= 0) {
+                            map.addLayer(layers[j]);
+                            j--;
+                        }
+                    });
+
+                    if (timeline === undefined) {
+                        if (urlQueryObject) {
+                            timelineOptions.start = new Date(urlQueryObject.minDate, 0, 0);
+                            timelineOptions.end = new Date(urlQueryObject.maxDate, 0, 0);
+                        }
+                        timeline = new links.Timeline(dom.byId("timeline"));
+                        timeline.draw(filteredData, timelineOptions);
+                        links.events.addListener(timeline, "ready", onTimelineReady);
+                        links.events.addListener(timeline, "select", onSelect);
+                        showStepTwo();
+                    } else {
+                        timeline.setData(filteredData);
+                        timeline.redraw();
+                    }
+
+                    $(".timelineItemTooltip").tooltipster({
+                        theme: "tooltipster-shadow",
+                        contentAsHTML: true,
+                        position: "right",
+                        offsetY: 20
+                    });
+
+                    $(".timeline-event").mouseenter(function (evt) {
+                        // TODO IE / What a mess!
+                        var xmin, ymin, xmax, ymax, extent, sfs;
+                        if (evt.target.children[0] !== undefined && evt.target.children[0].children[0] !== undefined) {
+                            if (evt.target.children[0].children[0].getAttribute("data-xmin")) {
+                                xmin = evt.target.children[0].children[0].getAttribute("data-xmin");
+                                xmax = evt.target.children[0].children[0].getAttribute("data-xmax");
+                                ymin = evt.target.children[0].children[0].getAttribute("data-ymin");
+                                ymax = evt.target.children[0].children[0].getAttribute("data-ymax");
+                            }
+                            // TODO
+                            var data = evt.currentTarget.childNodes[0].childNodes[0].dataset;
+                            if (data) {
+                                xmin = data.xmin;
+                                xmax = data.xmax;
+                                ymin = data.ymin;
+                                ymax = data.ymax;
+                            }
+                            extent = new Extent(xmin, ymin, xmax, ymax, new SpatialReference({
+                                wkid: 102100
+                            }));
+                            sfs = sfs = createMouseOverGraphic(
+                                new Color(Config.TIMELINE_ITEM_MOUSEOVER_GR_BORDER),
+                                new Color(Config.TIMELINE_ITEM_MOUSEOVER_GR_FILL));
+                            mouseOverGraphic = new Graphic(extent, sfs);
+                            map.graphics.add(mouseOverGraphic);
+                        }
+
+                    }).mouseleave(function () {
+                        map.graphics.remove(mouseOverGraphic);
+                        map.graphics.clear();
+                        addCrosshair(currentMapClickPoint);
+                    });
+                    hideLoadingIndicator();
+                }
+
+                function onSelect() {
+                    var sel = timeline.getSelection();
+                    var _timelineData = timeline.getData();
+                    if (sel.length) {
+                        if (sel[0].row !== undefined) {
+                            var row = sel[0].row;
+                            var objID = _timelineData[row].objID;
+                            // check to see if the timeline item is in the store
+                            var objIDs = store.query({
+                                objID: objID
+                            });
+
+                            if (objIDs.length < 1) {
+                                var downloadLink = _timelineData[row].downloadLink;
+                                var lodThreshhold = _timelineData[row].lodThreshold;
+                                var whereClause = Config.IMAGE_SERVER_WHERE + objID;
+                                var queryTask = new QueryTask(Config.IMAGE_SERVER);
+                                var q = new Query();
+                                q.returnGeometry = false;
+                                q.outFields = Config.OUTFIELDS;
+                                q.where = whereClause;
+                                queryTask.execute(q, function (rs) {
+                                    var extent = rs.features[0].geometry.getExtent();
+                                    var mapName = rs.features[0].attributes.Map_Name;
+                                    var dateCurrent = rs.features[0].attributes.DateCurrent;
+
+                                    if (dateCurrent === null)
+                                        dateCurrent = Config.MSG_UNKNOWN;
+                                    var scale = rs.features[0].attributes.Map_Scale;
                                     var scaleLabel = number.format(scale, {
                                         places: 0
                                     });
-                                    var lodThreshold = setLodThreshold(scale, Config.TIMELINE_LEGEND_VALUES, nScales, minScaleValue, maxScaleValue);
 
                                     var mosaicRule = new MosaicRule({
                                         "method": MosaicRule.METHOD_CENTER,
                                         "ascending": true,
                                         "operation": MosaicRule.OPERATION_FIRST,
-                                        "where": "OBJECTID = " + objID
+                                        "where": whereClause
                                     });
                                     var params = new ImageServiceParameters();
                                     params.noData = 0;
                                     params.mosaicRule = mosaicRule;
-                                    var imageServiceLayer = new ArcGISImageServiceLayer(Config.IMAGE_SERVER, {
+                                    imageServiceLayer = new ArcGISImageServiceLayer(Config.IMAGE_SERVER, {
                                         imageServiceParameters: params,
                                         opacity: 1.0
                                     });
-                                    layers.push(imageServiceLayer);
+                                    map.addLayer(imageServiceLayer);
+
+                                    var _firstRow;
+                                    if (query(".dgrid-row", grid.domNode)[0]) {
+                                        var rowId = query(".dgrid-row", grid.domNode)[0].id;
+                                        _firstRow = rowId.split("-")[2];
+                                    }
+                                    var firstRowObj = store.query({
+                                        objID: _firstRow
+                                    });
 
                                     store.put({
-                                        id: "1",
+                                        id: 1,
                                         objID: objID,
                                         layer: imageServiceLayer,
                                         name: mapName,
                                         imprintYear: dateCurrent,
                                         scale: scale,
                                         scaleLabel: scaleLabel,
-                                        lodThreshold: lodThreshold,
+                                        lodThreshold: lodThreshhold,
+                                        downloadLink: downloadLink,
                                         extent: extent
-                                    });
-                                });// End forEach
-                                return layers.reverse();
-                            }).then(function (layers) {
-                                array.forEach(layers, function (layer, index) {
-                                    map.addLayer(layer, index + 1);
-                                });
-                            });// END all
-
-                            // expand height of timeline parent container
-                            updateTimelineContainerHeight();
-                            showGrid();
-                            showStepThree();
-                        } else {
-                            // user shared only lat/lng and no selected maps
-                            showStepTwo();
-                        }
-                        runQuery(currentMapExtent, currentMapClickPoint);
-                    } else {
-                        // user shared default url
-                    }
-                } else {
-                    // user shared default url
-                }
-            }
-        }
-
-        function updateTimelineContainerHeight() {
-            var timelineContainerNode = dom.byId("timeline-container");
-            var timelineContainerNodeGeom = domStyle.getComputedStyle(timelineContainerNode);
-            var timelineContainerGeometry = domGeom.getContentBox(timelineContainerNode, timelineContainerNodeGeom);
-            if (timelineContainerGeometry.h === 0) {
-                var n = registry.byId("timeline-container").domNode;
-                fx.animateProperty({
-                    node: n,
-                    duration: 1000,
-                    properties: {
-                        height: {
-                            end: parseInt(Config.TIMELINE_HEIGHT) + 20
-                        }
-                    },
-                    onEnd: function () {
-                        registry.byId("main-window").layout();
-                    }
-                }).play();
-            }
-        }
-
-        function thumbnailRenderCell(object, data, td, options) {
-            var objID = object.objID;
-            var mapName = object.name;
-            var imprintYear = object.imprintYear;
-            var downloadLink = object.downloadLink;
-            var imgSrc = Config.IMAGE_SERVER + "/" + objID + Config.INFO_THUMBNAIL;
-
-            return domConstruct.create("div", {
-                "class": "renderedCell",
-                "innerHTML": "<button class='rm-layer-btn' data-objectid='" + objID + "'> X </button>" +
-                    "<img class='rm-layer-icon' src='" + imgSrc + "'>" +
-                    "<div class='thumbnailMapName' data-mapName-objectid='" + objID + "'>" + mapName + "</div>" +
-                    "<div class='thumbnailMapImprintYear'>" + imprintYear + "</div>" +
-                    "<div class='downloadLink'><a href='" + downloadLink + "' target='_parent'>Download deze kaart</a></div>" +
-                    "<div class='TransSlider'>" + "Gebruik de slider hieronder om de transparantie aan te passen" + "</div>",
-                onclick: function (evt) {
-                    var objID = evt.target.getAttribute("data-objectid");
-                    var storeObj = store.query({
-                        objID: objID
-                    });
-
-                    if (calcite.hasClass(evt.target, "thumbnailMapName")) {
-                        var qt = new QueryTask(Config.IMAGE_SERVER);
-                        var q = new Query();
-                        q.returnGeometry = false;
-                        q.outFields = Config.OUTFIELDS;
-                        q.where = "OBJECTID = " + evt.target.getAttribute("data-mapname-objectid");
-                        qt.execute(q).addCallback(function (response) {
-                            var feature = response.features[0].attributes;
-                            domConstruct.create("div", {
-                                "id": "grid-item-tooltip",
-                                "style": {
-                                    left: 205 + "px",
-                                    top: evt.clientY + "px"
-                                },
-                                "innerHTML": "<div class='btn btn-small btn-transparent icon-ui-close-circled icon-ui-gray padding-left-0 padding-right-0 padding-trailer-0 padding-leader-0'></div>" + feature.Citation,
-                                "onclick": function (evt) {
-                                    if (evt.target.getAttribute("class")) {
-                                        domConstruct.destroy("grid-item-tooltip");
-                                    }
-                                }
-                            }, win.body(), "first");
-                        });
-
-                    } else {
-                        map.removeLayer(storeObj[0].layer);
-                        store.remove(objID);
-                        if (store.data.length < 1) {
-                            // no remaining items in the grid/store
-                            map.graphics.remove(mouseOverGraphic);
-                            map.graphics.clear();
-                            addCrosshair(currentMapClickPoint);
-                            hideLoadingIndicator();
-                            showStepTwo();
-                        }
-                    }
-                }
-            });
-        }
-
-        function drawTimeline(data) {
-            var filteredData = filterData(data, filter);
-            topic.subscribe("/dnd/drop", function (source, nodes, copy, target) {
-                var layers = [];
-                query(".grid-map").forEach(domConstruct.destroy);
-                query(".dgrid-row").forEach(function (node) {
-                    var row = target.grid.row(node);
-                    if (row) {
-                        layers.push(row.data.layer);
-                        map.removeLayer(row.data.layer);
-
-                        var lodThreshold = row.data.lodThreshold;
-                        var maskId = domAttr.get(node, "id") + "-mask";
-                        if (currentLOD <= lodThreshold) {
-                            // disable row
-                            if (dom.byId("" + maskId) === null) {
-                                domConstruct.create("div", {
-                                    "id": "" + maskId,
-                                    "class": "grid-map",
-                                    "innerHTML": "<p style='text-align: center; margin-top: 20px'>" + Config.THUMBNAIL_VISIBLE_THRESHOLD_MSG + "</p>"
-                                }, node, "first");
+                                    }, {
+                                            before: firstRowObj[0]
+                                        });
+                                }).then(function (evt) {
+                                    showGrid();
+                                    grid.refresh();
+                                    showStepThree();
+                                }); // END execute
+                            } else {
+                                // TODO already in the store/added to the map (alert the user)
                             }
-                        } else {
-                            // enable row
-                            domConstruct.destroy("" + maskId);
                         }
                     }
-                });
-
-                var j = layers.length;
-                while (j >= 0) {
-                    map.addLayer(layers[j]);
-                    j--;
                 }
-            });
 
-            if (timeline === undefined) {
-                if (urlQueryObject) {
-                    timelineOptions.start = new Date(urlQueryObject.minDate, 0, 0);
-                    timelineOptions.end = new Date(urlQueryObject.maxDate, 0, 0);
+                function onTimelineReady() {
+                    // if the grid is visible, step 3 is visible, so hide step 2
+                    if ($(".gridContainer").css("display") === "block") {
+                        showStepThree();
+                    }
                 }
-                timeline = new links.Timeline(dom.byId("timeline"));
-                timeline.draw(filteredData, timelineOptions);
-                links.events.addListener(timeline, "ready", onTimelineReady);
-                links.events.addListener(timeline, "select", onSelect);
-                showStepTwo();
-            } else {
-                timeline.setData(filteredData);
-                timeline.redraw();
-            }
 
-            $(".timelineItemTooltip").tooltipster({
-                theme: "tooltipster-shadow",
-                contentAsHTML: true,
-                position: "right",
-                offsetY: 20
-            });
+                function createOrderedStore(data, options) {
+                    // Instantiate a Memory store modified to support ordering.
+                    return Observable(new Memory(lang.mixin({
+                        data: data,
+                        idProperty: "id",
+                        put: function (object, options) {
+                            object.id = calculateOrder(this, object, options && options.before);
+                            return Memory.prototype.put.call(this, object, options);
+                        },
+                        // Memory's add does not need to be augmented since it calls put
+                        copy: function (object, options) {
+                            console.log("COPY");
+                            // summary:
+                            //		Given an item already in the store, creates a copy of it.
+                            //		(i.e., shallow-clones the item sans id, then calls add)
+                            var k, obj = {}, id, idprop = this.idProperty, i = 0;
+                            for (k in object) {
+                                obj[k] = object[k];
+                            }
+                            // Ensure unique ID.
+                            // NOTE: this works for this example (where id's are strings);
+                            // Memory should autogenerate random numeric IDs, but
+                            // something seems to be falling through the cracks currently...
+                            id = object[idprop];
+                            if (id in this.index) {
+                                // rev id
+                                while (this.index[id + "(" + (++i) + ")"]) {
+                                }
+                                obj[idprop] = id + "(" + i + ")";
+                            }
+                            this.add(obj, options);
+                        },
+                        query: function (query, options) {
+                            options = options || {};
+                            options.sort = [
+                                { attribute: "id" }
+                            ];
+                            return Memory.prototype.query.call(this, query, options);
+                        }
+                    }, options)));
+                }
 
-            $(".timeline-event").mouseenter(function (evt) {
-                // TODO IE / What a mess!
-                var xmin, ymin, xmax, ymax, extent, sfs;
-                if (evt.target.children[0] !== undefined && evt.target.children[0].children[0] !== undefined) {
-                    if (evt.target.children[0].children[0].getAttribute("data-xmin")) {
-                        xmin = evt.target.children[0].children[0].getAttribute("data-xmin");
-                        xmax = evt.target.children[0].children[0].getAttribute("data-xmax");
-                        ymin = evt.target.children[0].children[0].getAttribute("data-ymin");
-                        ymax = evt.target.children[0].children[0].getAttribute("data-ymax");
+                function calculateOrder(store, object, before, orderField) {
+                    // Calculates proper value of order for an item to be placed before another
+                    var afterOrder,
+                        beforeOrder = 0;
+                    if (!orderField) {
+                        orderField = "id";
                     }
-                    // TODO
-                    var data = evt.currentTarget.childNodes[0].childNodes[0].dataset;
-                    if (data) {
-                        xmin = data.xmin;
-                        xmax = data.xmax;
-                        ymin = data.ymin;
-                        ymax = data.ymax;
+                    if (before) {
+                        // calculate midpoint between two items' orders to fit this one
+                        afterOrder = before[orderField];
+                        store.query({}, {}).forEach(function (object) {
+                            var ord = object[orderField];
+                            if (ord > beforeOrder && ord < afterOrder) {
+                                beforeOrder = ord;
+                            }
+                        });
+                        return (afterOrder + beforeOrder) / 2;
+                    } else {
+                        // find maximum order and place this one after it
+                        afterOrder = 0;
+                        store.query({}, {}).forEach(function (object) {
+                            var ord = object[orderField];
+                            if (ord > afterOrder) {
+                                afterOrder = ord;
+                            }
+                        });
+                        return afterOrder + 1;
                     }
-                    extent = new Extent(xmin, ymin, xmax, ymax, new SpatialReference({
-                        wkid: 102100
-                    }));
-                    sfs = sfs = createMouseOverGraphic(
-                        new Color(Config.TIMELINE_ITEM_MOUSEOVER_GR_BORDER),
-                        new Color(Config.TIMELINE_ITEM_MOUSEOVER_GR_FILL));
+                }
+
+                function setClassname(scale) {
+                    var className;
+                    if (scale <= TOPO_MAP_SCALES[4].value) {
+                        className = "one";	// 0 - 12000
+                    } else if (scale > TOPO_MAP_SCALES[4].value && scale <= TOPO_MAP_SCALES[3].value) {
+                        className = "two";	// 12001 - 24000
+                    } else if (scale > TOPO_MAP_SCALES[3].value && scale <= TOPO_MAP_SCALES[2].value) {
+                        className = "three";// 24001 - 63360
+                    } else if (scale > TOPO_MAP_SCALES[2].value && scale <= TOPO_MAP_SCALES[1].value) {
+                        className = "four";	// 63361 - 125000
+                    } else if (scale > TOPO_MAP_SCALES[1].value) {
+                        className = "five";	// 125001 - 250000
+                    }
+                    return className;
+                }
+
+                function setLodThreshold(scale) {
+                    var _lodThreshold;
+                    var i = nScales;
+                    while (i > 0) {
+                        if (scale <= minScaleValue) {
+                            _lodThreshold = TOPO_MAP_SCALES[TOPO_MAP_SCALES.length - 1].lodThreshold;
+                            break;
+                        }
+
+                        if (scale > TOPO_MAP_SCALES[i].value && scale <= TOPO_MAP_SCALES[i - 1].value) {
+                            _lodThreshold = TOPO_MAP_SCALES[i - 1].lodThreshold;
+                            break;
+                        }
+
+                        if (scale > maxScaleValue) {
+                            _lodThreshold = TOPO_MAP_SCALES[0].lodThreshold;
+                            break;
+                        }
+                        i--;
+                    }
+
+                    return _lodThreshold;
+                }
+
+                function getNumberOfScales(scales) {
+                    return scales.length - 1;
+                }
+
+                function getMinScaleValue(scales) {
+                    return scales[nScales].value;
+                }
+
+                function getMaxScaleValue(scales) {
+                    return scales[0].value;
+                }
+
+                function createMouseOverGraphic(borderColor, fillColor) {
+                    var sfs = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+                        new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, borderColor, Config.IMAGE_BORDER_WIDTH), fillColor);
+                    return sfs;
+                }
+
+                function addCrosshair(mp) {
+                    var crosshairSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CROSS, Config.CROSSHAIR_SIZE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color(Config.CROSSHAIR_FILL_COLOR), Config.CROSSHAIR_OPACITY));
+                    if (crosshairGraphic) {
+                        map.graphics.remove(crosshairGraphic);
+                    }
+                    crosshairGraphic = new Graphic(mp, crosshairSymbol);
+                    map.graphics.add(crosshairGraphic);
+                }
+
+                function setAppHeaderStyle(txtColor, backgroundColor) {
+                    query(".header").style("color", txtColor);
+                    query(".header").style("background-color", backgroundColor);
+                }
+
+                function setAppHeaderTitle(str) {
+                    query(".header-title")[0].innerHTML = str;
+                }
+
+                function setAppHeaderSubtitle(str) {
+                    query(".subheader-title")[0].innerHTML = str;
+                }
+
+                function setAppMessage(node, str) {
+                    query(node)[0].innerHTML = str;
+                }
+
+                function setTimelineLegendHeaderTitle(str) {
+                    query(".timeline-legend-header")[0].innerHTML = str;
+                }
+
+                function setTimelineContainerStyle(backgroundColor) {
+                    domStyle.set(dom.byId("timeline-container"), "backgroundColor", backgroundColor);
+                }
+
+                function resetApplicationClickHandler() {
+                    window.open(window.location.origin + window.location.pathname, '_top');
+                }
+
+                /*********************
+                 *
+                 * Grid
+                 *
+                 *********************/
+                function gridDataChangeHandler(evt) {
+                    var diff = 1 - evt.value;
+                    evt.cell.row.data.layer.setOpacity(diff);
+                    //console.debug("cell: ", evt.cell, evt.cell.row.id, evt.cell.row.data.layer);
+                }
+
+                function gridRefreshHandler(event) {
+                    array.forEach(event.grid.store.data, function (node) {
+                        var row = grid.row(node);
+                        var lodThreshold = row.data.lodThreshold;
+                        var maskId = "grid-row-" + row.data.objID + "-mask";
+                        if (currentLOD <= lodThreshold) {
+                            domConstruct.create("div", {
+                                id: "" + maskId,
+                                "class": "grid-map",
+                                innerHTML: "<p style='text-align: center; margin-top: 20px'>" + Config.THUMBNAIL_VISIBLE_THRESHOLD_MSG + "</p>"
+                            }, row.element, "first");
+                        } else {
+
+                        }
+                    });
+                }
+
+                function gridEnterCellHandler(evt) {
+                    if (mouseOverGraphic)
+                        map.graphics.remove(mouseOverGraphic);
+                    var row = grid.row(evt);
+                    var extent = row.data.extent;
+                    var sfs = createMouseOverGraphic(
+                        new Color(Config.SIDEBAR_MAP_MOUSEOVER_GR_BORDER),
+                        new Color(Config.SIDEBAR_MAP_MOUSEOVER_GR_FILL));
                     mouseOverGraphic = new Graphic(extent, sfs);
                     map.graphics.add(mouseOverGraphic);
                 }
 
-            }).mouseleave(function () {
-                map.graphics.remove(mouseOverGraphic);
-                map.graphics.clear();
-                addCrosshair(currentMapClickPoint);
-            });
-            hideLoadingIndicator();
-        }
-
-        function onSelect() {
-            var sel = timeline.getSelection();
-            var _timelineData = timeline.getData();
-            if (sel.length) {
-                if (sel[0].row !== undefined) {
-                    var row = sel[0].row;
-                    var objID = _timelineData[row].objID;
-                    // check to see if the timeline item is in the store
-                    var objIDs = store.query({
-                        objID: objID
-                    });
-
-                    if (objIDs.length < 1) {
-                        var downloadLink = _timelineData[row].downloadLink;
-                        var lodThreshhold = _timelineData[row].lodThreshold;
-                        var whereClause = Config.IMAGE_SERVER_WHERE + objID;
-                        var queryTask = new QueryTask(Config.IMAGE_SERVER);
-                        var q = new Query();
-                        q.returnGeometry = false;
-                        q.outFields = Config.OUTFIELDS;
-                        q.where = whereClause;
-                        queryTask.execute(q, function (rs) {
-                            var extent = rs.features[0].geometry.getExtent();
-                            var mapName = rs.features[0].attributes.Map_Name;
-                            var dateCurrent = rs.features[0].attributes.DateCurrent;
-
-                            if (dateCurrent === null)
-                                dateCurrent = Config.MSG_UNKNOWN;
-                            var scale = rs.features[0].attributes.Map_Scale;
-                            var scaleLabel = number.format(scale, {
-                                places: 0
-                            });
-
-                            var mosaicRule = new MosaicRule({
-                                "method": MosaicRule.METHOD_CENTER,
-                                "ascending": true,
-                                "operation": MosaicRule.OPERATION_FIRST,
-                                "where": whereClause
-                            });
-                            var params = new ImageServiceParameters();
-                            params.noData = 0;
-                            params.mosaicRule = mosaicRule;
-                            imageServiceLayer = new ArcGISImageServiceLayer(Config.IMAGE_SERVER, {
-                                imageServiceParameters: params,
-                                opacity: 1.0
-                            });
-                            map.addLayer(imageServiceLayer);
-
-                            var _firstRow;
-                            if (query(".dgrid-row", grid.domNode)[0]) {
-                                var rowId = query(".dgrid-row", grid.domNode)[0].id;
-                                _firstRow = rowId.split("-")[2];
-                            }
-                            var firstRowObj = store.query({
-                                objID: _firstRow
-                            });
-
-                            store.put({
-                                id: 1,
-                                objID: objID,
-                                layer: imageServiceLayer,
-                                name: mapName,
-                                imprintYear: dateCurrent,
-                                scale: scale,
-                                scaleLabel: scaleLabel,
-                                lodThreshold: lodThreshhold,
-                                downloadLink: downloadLink,
-                                extent: extent
-                            }, {
-                                    before: firstRowObj[0]
-                                });
-                        }).then(function (evt) {
-                            showGrid();
-                            grid.refresh();
-                            showStepThree();
-                        }); // END execute
-                    } else {
-                        // TODO already in the store/added to the map (alert the user)
-                    }
+                function gridLeaveCellHandler(evt) {
+                    map.graphics.remove(mouseOverGraphic);
+                    map.graphics.clear();
+                    addCrosshair(currentMapClickPoint);
                 }
-            }
-        }
-
-        function onTimelineReady() {
-            // if the grid is visible, step 3 is visible, so hide step 2
-            if ($(".gridContainer").css("display") === "block") {
-                showStepThree();
-            }
-        }
-
-        function createOrderedStore(data, options) {
-            // Instantiate a Memory store modified to support ordering.
-            return Observable(new Memory(lang.mixin({
-                data: data,
-                idProperty: "id",
-                put: function (object, options) {
-                    object.id = calculateOrder(this, object, options && options.before);
-                    return Memory.prototype.put.call(this, object, options);
-                },
-                // Memory's add does not need to be augmented since it calls put
-                copy: function (object, options) {
-                    console.log("COPY");
-                    // summary:
-                    //		Given an item already in the store, creates a copy of it.
-                    //		(i.e., shallow-clones the item sans id, then calls add)
-                    var k, obj = {}, id, idprop = this.idProperty, i = 0;
-                    for (k in object) {
-                        obj[k] = object[k];
-                    }
-                    // Ensure unique ID.
-                    // NOTE: this works for this example (where id's are strings);
-                    // Memory should autogenerate random numeric IDs, but
-                    // something seems to be falling through the cracks currently...
-                    id = object[idprop];
-                    if (id in this.index) {
-                        // rev id
-                        while (this.index[id + "(" + (++i) + ")"]) {
-                        }
-                        obj[idprop] = id + "(" + i + ")";
-                    }
-                    this.add(obj, options);
-                },
-                query: function (query, options) {
-                    options = options || {};
-                    options.sort = [
-                        { attribute: "id" }
-                    ];
-                    return Memory.prototype.query.call(this, query, options);
-                }
-            }, options)));
-        }
-
-        function calculateOrder(store, object, before, orderField) {
-            // Calculates proper value of order for an item to be placed before another
-            var afterOrder,
-                beforeOrder = 0;
-            if (!orderField) {
-                orderField = "id";
-            }
-            if (before) {
-                // calculate midpoint between two items' orders to fit this one
-                afterOrder = before[orderField];
-                store.query({}, {}).forEach(function (object) {
-                    var ord = object[orderField];
-                    if (ord > beforeOrder && ord < afterOrder) {
-                        beforeOrder = ord;
-                    }
-                });
-                return (afterOrder + beforeOrder) / 2;
-            } else {
-                // find maximum order and place this one after it
-                afterOrder = 0;
-                store.query({}, {}).forEach(function (object) {
-                    var ord = object[orderField];
-                    if (ord > afterOrder) {
-                        afterOrder = ord;
-                    }
-                });
-                return afterOrder + 1;
-            }
-        }
-
-        function setClassname(scale) {
-            var className;
-            if (scale <= TOPO_MAP_SCALES[5].value) {
-                className = "one";	// 1 - 5 000
-            } else if (scale > TOPO_MAP_SCALES[5].value && scale <= TOPO_MAP_SCALES[4].value) {
-                className = "two";	// 5 000 - 10 000
-            } else if (scale > TOPO_MAP_SCALES[4].value && scale <= TOPO_MAP_SCALES[3].value) {
-                className = "three";// 10 000 - 25 000
-            } else if (scale > TOPO_MAP_SCALES[3].value && scale <= TOPO_MAP_SCALES[2].value) {
-                className = "four";	// 25 000 - 50 000
-            } else if (scale > TOPO_MAP_SCALES[2].value && scale <= TOPO_MAP_SCALES[1].value) {
-                className = "five";	// 50 000 - 100 000
-            } else if (scale > TOPO_MAP_SCALES[1].value) {
-                className = "six"; // 100 000+
-              }
-            return className;
-        }
-
-        function setLodThreshold(scale) {
-            var _lodThreshold;
-            var i = nScales;
-            while (i > 0) {
-                if (scale <= minScaleValue) {
-                    _lodThreshold = TOPO_MAP_SCALES[TOPO_MAP_SCALES.length - 1].lodThreshold;
-                    break;
-                }
-
-                if (scale > TOPO_MAP_SCALES[i].value && scale <= TOPO_MAP_SCALES[i - 1].value) {
-                    _lodThreshold = TOPO_MAP_SCALES[i - 1].lodThreshold;
-                    break;
-                }
-
-                if (scale > maxScaleValue) {
-                    _lodThreshold = TOPO_MAP_SCALES[0].lodThreshold;
-                    break;
-                }
-                i--;
-            }
-
-            return _lodThreshold;
-        }
-
-        function getNumberOfScales(scales) {
-            return scales.length - 1;
-        }
-
-        function getMinScaleValue(scales) {
-            return scales[nScales].value;
-        }
-
-        function getMaxScaleValue(scales) {
-            return scales[0].value;
-        }
-
-        function createMouseOverGraphic(borderColor, fillColor) {
-            var sfs = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
-                new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, borderColor, Config.IMAGE_BORDER_WIDTH), fillColor);
-            return sfs;
-        }
-
-        function addCrosshair(mp) {
-            var crosshairSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CROSS, Config.CROSSHAIR_SIZE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color(Config.CROSSHAIR_FILL_COLOR), Config.CROSSHAIR_OPACITY));
-            if (crosshairGraphic) {
-                map.graphics.remove(crosshairGraphic);
-            }
-            crosshairGraphic = new Graphic(mp, crosshairSymbol);
-            map.graphics.add(crosshairGraphic);
-        }
-
-        function setAppHeaderStyle(txtColor, backgroundColor) {
-            query(".header").style("color", txtColor);
-            query(".header").style("background-color", backgroundColor);
-        }
-
-        function setAppHeaderTitle(str) {
-            query(".header-title")[0].innerHTML = str;
-        }
-
-        function setAppHeaderSubtitle(str) {
-            query(".subheader-title")[0].innerHTML = str;
-        }
-
-        function setAppMessage(node, str) {
-            query(node)[0].innerHTML = str;
-        }
-
-        function setTimelineLegendHeaderTitle(str) {
-            query(".timeline-legend-header")[0].innerHTML = str;
-        }
-
-        function setTimelineContainerStyle(backgroundColor) {
-            domStyle.set(dom.byId("timeline-container"), "backgroundColor", backgroundColor);
-        }
-
-        function resetApplicationClickHandler() {
-            window.open(window.location.origin + window.location.pathname, '_top');
-        }
-
-        /*********************
-         *
-         * Grid
-         *
-         *********************/
-        function gridDataChangeHandler(evt) {
-            var diff = 1 - evt.value;
-            evt.cell.row.data.layer.setOpacity(diff);
-            //console.debug("cell: ", evt.cell, evt.cell.row.id, evt.cell.row.data.layer);
-        }
-
-        function gridRefreshHandler(event) {
-            array.forEach(event.grid.store.data, function (node) {
-                var row = grid.row(node);
-                var lodThreshold = row.data.lodThreshold;
-                var maskId = "grid-row-" + row.data.objID + "-mask";
-                if (currentLOD <= lodThreshold) {
-                    domConstruct.create("div", {
-                        id: "" + maskId,
-                        "class": "grid-map",
-                        innerHTML: "<p style='text-align: center; margin-top: 20px'>" + Config.THUMBNAIL_VISIBLE_THRESHOLD_MSG + "</p>"
-                    }, row.element, "first");
-                } else {
-
-                }
-            });
-        }
-
-        function gridEnterCellHandler(evt) {
-            if (mouseOverGraphic)
-                map.graphics.remove(mouseOverGraphic);
-            var row = grid.row(evt);
-            var extent = row.data.extent;
-            var sfs = createMouseOverGraphic(
-                new Color(Config.SIDEBAR_MAP_MOUSEOVER_GR_BORDER),
-                new Color(Config.SIDEBAR_MAP_MOUSEOVER_GR_FILL));
-            mouseOverGraphic = new Graphic(extent, sfs);
-            map.graphics.add(mouseOverGraphic);
-        }
-
-        function gridLeaveCellHandler(evt) {
-            map.graphics.remove(mouseOverGraphic);
-            map.graphics.clear();
-            addCrosshair(currentMapClickPoint);
-        }
 
         /*********************
          *

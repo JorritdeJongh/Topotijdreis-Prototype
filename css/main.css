@@ -197,12 +197,11 @@ body{overflow:hidden}
 .timeline-event-line.notInScale{border-width:1px;opacity:.5}div
 .timeline-event-box.notInScale{background-color:#ddd;color:#333;opacity:.5}div
 .timeline-event-line.notInScale{border-width:1px;border-color:#bfbfbf;opacity:.5}div
-.timeline-event-box.one{background-color:#99CCFF;color:#f9f9f9}div
-.timeline-event-box.two{background-color:#66B2FF;color:#f9f9f9}div
-.timeline-event-box.three{background-color:#3399FF;color:#f9f9f9}div
-.timeline-event-box.four{background-color:#0080FF;color:#f9f9f9}div
-.timeline-event-box.five{background-color:#0066CC;color:#f9f9f9}div
-.timeline-event-box.six{background:#004C99;color:#f9f9f9}div
+.timeline-event-box.one{background-color:#00ffac;color:#000000}div
+.timeline-event-box.two{background-color:#00f9ff;color:#000000}div
+.timeline-event-box.three{background-color:#00c3ff;color:#000000}div
+.timeline-event-box.four{background-color:#0076FF;color:#000000}div
+.timeline-event-box.five{background-color:#0054ff;color:#f9f9f9}div
 .timeline-axis-text{color:#606060;padding:3px;white-space:nowrap;font-size:.75em;margin-left:-15px;margin-top:5px;font-weight:500}div
 .timeline-event-dot{border-style:solid;border-width:3px;border-radius:3px;-moz-border-radius:3px}div
 .timeline-event-box{text-align:center;border-style:solid;border-width:1px;border-radius:4px;-moz-border-radius:4px}
@@ -229,7 +228,7 @@ body{overflow:hidden}
 .downloadLink{font-size:.75em;color:#666}
 .downloadLink:hover{color:#1d2966;cursor:pointer}
 .TransSlider{font-size:.8em;color:#646464;font-weight:600}
-.rm-layer-btn{position:absolute!important;left:25px!important;margin-top:-10px!important;border-radius:15px;opacity:1}
+.rm-layer-btn{position:absolute!important;left:350px!important;margin-top:-10px!important;border-radius:15px;opacity:1}
 .rm-layer-btn:hover{opacity:.95}
 .rm-layer-icon{width:90px;float:left;padding:4px}
 .dgrid-row{margin-bottom:20px!important;margin-left:20px;height:120px;border-radius:4px}table > tr > td
@@ -239,7 +238,7 @@ body{overflow:hidden}
 .field-transparency
 .dgrid-cell-editing{position:absolute;margin-top:70px;margin-left:-100px}
 .dgrid-row-table{margin-top:10px!important}
-.grid-map{background-color:#dadada;border-radius:4px;height:120px;width:345px;position:fixed;z-index:300;opacity:.88;color:#000;font-size:1.2em}html
+.grid-map{background-color:#71b3c6;border-radius:4px;height:120px;width:125px;position:fixed!important;z-index:300;opacity:.75;color:#000;font-size:1em}html
 
 .has-mozilla
 .dgrid :focus,html
