@@ -739,8 +739,9 @@ require([
                                             "<img class='rm-layer-icon' src='" + imgSrc + "'>" +
                                             "<div class='thumbnailMapName' data-mapname-objectid='" + objID + "'>" + mapName + "</div>" +
                                             "<div class='thumbnailMapImprintYear'>" + imprintYear + "</div>" +
-                                            "<div class='downloadLink'><a href='" + downloadLink + "' target='_parent'>Download deze kaart</a></div>",
-                                             "<div class='TransSlider'>" + "Gebruik de slider hieronder om de transparantie aan te passen" + "</div>",
+                                            "<div class='downloadLink'><a href='" + downloadLink + "' target='_parent'>Download deze kaart</a></div>" +
+                                            "<div class='TransSlider'>" + "Gebruik de slider hieronder om de transparantie aan te passen" + "</div>",
+
                                         onclick: function (evt) {
                                             let objID = evt.target.getAttribute("data-objectid");
                                             let storeObj = store.query({
