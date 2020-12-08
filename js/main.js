@@ -84,7 +84,7 @@ require([
         ArcGISImageServiceLayer, ImageServiceParameters, MosaicRule, Map, SimpleFillSymbol, SimpleLineSymbol, SimpleMarkerSymbol, Color,
         Query, QueryTask, urlUtils, esriRequest, esriLang) {
 
-        var map,
+        let map,
             imageServiceLayer,
 
             // dgrid store
@@ -138,10 +138,10 @@ require([
             minScaleValue = getMinScaleValue(TOPO_MAP_SCALES);
             //
             checkSignIn().then(function (response) {
-                var signInEle = query(".sign-in-message")[0];
-                var saveMapsEle = query(".save-maps-message")[0];
-                var deployRoot = getDeployRoot(window.location.host);
-                var sharingUrl = "https://" + deployRoot + "." + Config.DOMAIN;
+                let signInEle = query(".sign-in-message")[0];
+                let saveMapsEle = query(".save-maps-message")[0];
+                let deployRoot = getDeployRoot(window.location.host);
+                let sharingUrl = "https://" + deployRoot + "." + Config.DOMAIN;
                 if (response.message === Config.USER_NOT_SIGNED_IN) {
                     portal = response;
                     calcite.removeClass(signInEle, "hide");
@@ -172,7 +172,7 @@ require([
             on(query(".about-modal")[0], "click", aboutApplication);
             on(document, "click", documentClickHandler);
 
-            var columns = [
+            let columns = [
                 {
                     label: " ",
                     field: "objID",
@@ -202,14 +202,9 @@ require([
                 columns: columns,
                 showHeader: false,
                 selectionMode: "single",
-                sortable: true,
-                allowSorting: true,
                 dndParams: {
                     singular: true
                 },
-                getObjectDndType: function (item) {
-                    return [item.type ? item.type : this.dndSourceType];
-                }
             }, "grid");
 
             grid.on("dgrid-datachange", gridDataChangeHandler);
@@ -239,14 +234,14 @@ require([
             watchSplitters(registry.byId("main-window"));
         });
 
-        function saveMapsHandler(evt) {
+        function saveMapsHandler(){
             if (portal.message === Config.USER_NOT_SIGNED_IN) {
                 // user is not signed in
-                var deployRoot = getDeployRoot(window.location.host);
-                var sharingUrl = "https://" + deployRoot + "." + Config.DOMAIN;
+                let deployRoot = getDeployRoot(window.location.host);
+                let sharingUrl = "https://" + deployRoot + "." + Config.DOMAIN;
                 esriId.getCredential(sharingUrl, {
                     oAuthPopupConfirmation: false
-                }).then(function (response) {
+                }).then(function(){
                     new arcgisPortal.Portal(sharingUrl).signIn().then(function (portalUser) {
                         portal = portalUser.portal;
                         calcite.addClass(query(".sign-in-message")[0], "hide");
@@ -263,17 +258,16 @@ require([
         function saveWebMap(credentials) {
             // TODO show loading saving indicator
             // User authenticated...
-            var tmp = [].slice.call(document.querySelectorAll('[data-objectid]'));
-            var objectIDs = tmp.map(function (x) {
+            let tmp = [].slice.call(document.querySelectorAll('[data-objectid]'));
+            let objectIDs = tmp.map(function (x) {
                 return x.dataset.objectid;
             });
 
-            var url = Config.IMAGE_SERVER;
-            var operationalLayers = array.map(objectIDs, function (objectID) {
-                var storeObj = store.query({
+            let url = Config.IMAGE_SERVER;
+            let operationalLayers = array.map(objectIDs, function (objectID) {
+                let storeObj = store.query({
                     objID: objectID
                 })[0];
-                var yr = "";
                 if (storeObj.imprintYear === undefined) {
                     yr = "";
                 } else {
@@ -293,20 +287,20 @@ require([
                 };
             });
 
-            var currentExtent = [];
-            var lowerLeft = new Point(map.extent.xmin, map.extent.ymin);
-            var lowerLeft_x = webMercatorUtils.webMercatorToGeographic(lowerLeft).x;
-            var lowerLeft_y = webMercatorUtils.webMercatorToGeographic(lowerLeft).y;
+            let currentExtent = [];
+            let lowerLeft = new Point(map.extent.xmin, map.extent.ymin);
+            let lowerLeft_x = webMercatorUtils.webMercatorToGeographic(lowerLeft).x;
+            let lowerLeft_y = webMercatorUtils.webMercatorToGeographic(lowerLeft).y;
             currentExtent.push(lowerLeft_x);
             currentExtent.push(lowerLeft_y);
-            var upperRight = new Point(map.extent.xmax, map.extent.ymax);
-            var upperRight_x = webMercatorUtils.webMercatorToGeographic(upperRight).x;
-            var upperRight_y = webMercatorUtils.webMercatorToGeographic(upperRight).y;
+            let upperRight = new Point(map.extent.xmax, map.extent.ymax);
+            let upperRight_x = webMercatorUtils.webMercatorToGeographic(upperRight).x;
+            let upperRight_y = webMercatorUtils.webMercatorToGeographic(upperRight).y;
             currentExtent.push(upperRight_x);
             currentExtent.push(upperRight_y);
 
-            var deployRoot = getDeployRoot(window.location.host);
-            var sharingUrl = "https://" + deployRoot + "." + Config.DOMAIN;
+            let deployRoot = getDeployRoot(window.location.host);
+            let sharingUrl = "https://" + deployRoot + "." + Config.DOMAIN;
             esriRequest({
                 url: sharingUrl + "/sharing/rest/content/users/" + credentials.userId + "/addItem",
                 content: {
@@ -350,15 +344,15 @@ require([
             ).then(function (response) {
                 if (response.success) {
                     // show alert message
-                    // var successMsgEle = document.getElementsByClassName('save-success-msg')[0];
+                    // let successMsgEle = document.getElementsByClassName('save-success-msg')[0];
                     // calcite.removeClass(successMsgEle, 'hide');
                     // fade message out
                     // this._fade(successMsgEle);
-                    var itemID = response.id;
-                    var deployRoot = getDeployRoot(window.location.host);
-                    var urlKey = esriLang.isDefined(portal.urlKey) ? portal.urlKey : null;
+                    let itemID = response.id;
+                    let deployRoot = getDeployRoot(window.location.host);
+                    let urlKey = esriLang.isDefined(portal.urlKey) ? portal.urlKey : null;
                     if (esriLang.isDefined(urlKey)) {
-                        var customBaseUrl = esriLang.isDefined(portal.customBaseUrl) ? portal.customBaseUrl : "." + Config.DOMAIN;
+                        let customBaseUrl = esriLang.isDefined(portal.customBaseUrl) ? portal.customBaseUrl : "." + Config.DOMAIN;
                         window.open("https://" + urlKey + "." + customBaseUrl + "/home/webmap/viewer.html?webmap=" + itemID, "_blank");
                     } else {
                         window.open("https://" + deployRoot + "." + Config.DOMAIN + "/home/webmap/viewer.html?webmap=" + itemID, "_blank");
@@ -393,18 +387,18 @@ require([
 
                 function buildLegend(legendItem) {
                     // TODO Change from topo-legend to timeline-legend
-                    var legendNode = query(".topo-legend")[0];
-                    var node = domConstruct.toDom('<label data-scale="' + legendItem.value + '" data-placement="right" class="btn toggle-scale active" style="background-color: ' + legendItem.color + '">' +
+                    let legendNode = query(".topo-legend")[0];
+                    let node = domConstruct.toDom('<label data-scale="' + legendItem.value + '" data-placement="right" class="btn toggle-scale active" style="background-color: ' + legendItem.color + '">' +
                         '<input type="checkbox" name="options"><span data-scale="' + legendItem.value + '">' + legendItem.label + '</span>' +
                         '</label>');
 
                     if (urlQueryObject) {
-                        var _tmpFilters = urlQueryObject.f.split("|");
-                        var num = number.format(legendItem.value, {
+                        let _tmpFilters = urlQueryObject.f.split("|");
+                        let num = number.format(legendItem.value, {
                             places: 0,
                             pattern: "#"
                         });
-                        var i = _tmpFilters.indexOf(num);
+                        let i = _tmpFilters.indexOf(num);
                         if (_tmpFilters[i] !== undefined) {
                             domClass.toggle(node, "sel");
                             domStyle.set(node, "opacity", "0.3");
@@ -415,22 +409,22 @@ require([
                     }
 
                     on(node, "click", function (evt) {
-                        var selectedScale = evt.target.getAttribute("data-scale");
+                        let selectedScale = evt.target.getAttribute("data-scale");
                         domClass.toggle(this, "sel");
                         if (domClass.contains(this, "sel")) {
-                            var j = filter.indexOf(selectedScale);
+                            let j = filter.indexOf(selectedScale);
                             if (j === -1) {
                                 filter.push(selectedScale);
                             }
                             domStyle.set(this, "opacity", "0.3");
                             filterSelection.push(selectedScale);
                         } else {
-                            var k = filter.indexOf(selectedScale);
+                            let k = filter.indexOf(selectedScale);
                             if (k !== -1) {
                                 filter.splice(k, 1);
                             }
                             domStyle.set(this, "opacity", "1.0");
-                            var i = filterSelection.indexOf(selectedScale);
+                            let i = filterSelection.indexOf(selectedScale);
                             if (i != -1) {
                                 filterSelection.splice(i, 1);
                             }
@@ -441,16 +435,16 @@ require([
                 }
 
                 function watchSplitters(bc) {
-                    var timelineContainerNode = dom.byId("timeline-container");
+                    let timelineContainerNode = dom.byId("timeline-container");
                     array.forEach(["bottom"], function (region) {
-                        var spl = bc.getSplitter(region);
+                        let spl = bc.getSplitter(region);
                         aspect.after(spl, "_startDrag", function () {
                             domStyle.set(spl.child.domNode, "opacity", "0.4");
                         });
                         aspect.after(spl, "_stopDrag", function () {
                             domStyle.set(spl.child.domNode, "opacity", "1.0");
                             // TODO Timeline height needs to be resized accordingly
-                            var node = dom.byId("timeline-container");
+                            let node = dom.byId("timeline-container");
                             timelineContainerNodeGeom = domStyle.getComputedStyle(timelineContainerNode);
                             timelineContainerGeometry = domGeom.getContentBox(node, timelineContainerNodeGeom);
                             drawTimeline(timelineData);
@@ -460,30 +454,30 @@ require([
 
 
                 function getUrlParameters() {
-                    var urlObject = urlUtils.urlToObject(window.location.href);
+                    let urlObject = urlUtils.urlToObject(window.location.href);
                     return urlObject.query;
                 }
 
                 function filterData(dataToFilter, filter) {
-                    var _filteredData = [];
-                    var exclude = false;
-                    var nFilters = filter.length;
+                    let _filteredData = [];
+                    let exclude = false;
+                    let nFilters = filter.length;
 
                     if (nFilters > 0) {
-                        var mapScaleValues = [];
-                        for (var i = 0; i < TOPO_MAP_SCALES.length; i++) {
+                        let mapScaleValues = [];
+                        for (let i = 0; i < TOPO_MAP_SCALES.length; i++) {
                             mapScaleValues.push(TOPO_MAP_SCALES[i].value);
                         }
 
                         array.forEach(dataToFilter, function (item) {
                             // loop through each filter
-                            for (var i = 0; i < nFilters; i++) {
-                                var _filterScale = number.parse(filter[i]);
-                                var _mapScale = item.scale;
-                                var _pos = array.indexOf(mapScaleValues, _filterScale);
-                                var _lowerBoundScale;
-                                var _upperBoundScale;
-                                var current;
+                            for (let i = 0; i < nFilters; i++) {
+                                let _filterScale = number.parse(filter[i]);
+                                let _mapScale = item.scale;
+                                let _pos = array.indexOf(mapScaleValues, _filterScale);
+                                let _lowerBoundScale;
+                                let _upperBoundScale;
+                                let current;
 
                                 if (_pos !== -1) {
                                     if (TOPO_MAP_SCALES[_pos + 1] !== undefined) {
@@ -536,10 +530,10 @@ require([
                     }
                 }
 
-                function runQuery(mapExtent, mp, lod) {
-                    var timelineContainerNode = dom.byId("timeline-container");
-                    var queryTask = new QueryTask(Config.IMAGE_SERVER);
-                    var q = new Query();
+                function runQuery(mapExtent, mp) {
+                    let timelineContainerNode = dom.byId("timeline-container");
+                    let queryTask = new QueryTask(Config.IMAGE_SERVER);
+                    let q = new Query();
                     q.returnGeometry = true;
                     q.outFields = Config.OUTFIELDS;
                     q.spatialRelationship = Query.SPATIAL_REL_INTERSECTS;
@@ -554,16 +548,16 @@ require([
                     }
 
                     showLoadingIndicator();
-                    var deferred = queryTask.execute(q).addCallback(function (response) {
+                    let deferred = queryTask.execute(q).addCallback(function (response) {
                         timelineData = [];
-                        var nFeatures = response.features.length;
+                        let nFeatures = response.features.length;
 
                         if (nFeatures > 0) {
                             query(".timeline-mask").forEach(domConstruct.destroy);
                             timelineContainerNodeGeom = domStyle.getComputedStyle(timelineContainerNode);
                             timelineContainerGeometry = domGeom.getContentBox(timelineContainerNode, timelineContainerNodeGeom);
                             if (timelineContainerGeometry.h === 0) {
-                                var n = registry.byId("timeline-container").domNode;
+                                let n = registry.byId("timeline-container").domNode;
                                 fx.animateProperty({
                                     node: n,
                                     duration: 1000,
@@ -579,36 +573,36 @@ require([
                             }
 
                             array.forEach(response.features, function (feature) {
-                                var ext = feature.geometry.getExtent();
-                                var xmin = ext.xmin;
-                                var xmax = ext.xmax;
-                                var ymin = ext.ymin;
-                                var ymax = ext.ymax;
+                                let ext = feature.geometry.getExtent();
+                                let xmin = ext.xmin;
+                                let xmax = ext.xmax;
+                                let ymin = ext.ymin;
+                                let ymax = ext.ymax;
 
-                                var objID = feature.attributes[Config.ATTRIBUTE_OBJECTID];
-                                var mapName = feature.attributes[Config.ATTRIBUTE_MAP_NAME];
-                                var scale = feature.attributes[Config.ATTRIBUTE_SCALE];
-                                var dateCurrent = feature.attributes[Config.ATTRIBUTE_DATE];
+                                let objID = feature.attributes[Config.ATTRIBUTE_OBJECTID];
+                                let mapName = feature.attributes[Config.ATTRIBUTE_MAP_NAME];
+                                let scale = feature.attributes[Config.ATTRIBUTE_SCALE];
+                                let dateCurrent = feature.attributes[Config.ATTRIBUTE_DATE];
                                 if (dateCurrent === null)
                                     dateCurrent = Config.MSG_UNKNOWN;
-                                var day = formatDay(dateCurrent);
-                                var month = formatMonth(dateCurrent);
-                                var year = formatYear(dateCurrent);
-                                var formattedDate = month + "/" + day + "/" + year;
+                                let day = formatDay(dateCurrent);
+                                let month = formatMonth(dateCurrent);
 
-                                var startDate = new Date(dateCurrent, month, day);
 
-                                var downloadLink = feature.attributes[Config.ATTRIBUTE_DOWNLOAD_LINK];
-                                var citation = feature.attributes[Config.ATTRIBUTE_CITATION];
-                                var className = setClassname(scale);
-                                var lodThreshold = setLodThreshold(scale);
 
-                                var tooltipContent = "<img class='tooltipThumbnail' src='" + Config.IMAGE_SERVER + "/" + objID + Config.INFO_THUMBNAIL + "'>" +
+                                let startDate = new Date(dateCurrent, month, day);
+
+                                let downloadLink = feature.attributes[Config.ATTRIBUTE_DOWNLOAD_LINK];
+                                let citation = feature.attributes[Config.ATTRIBUTE_CITATION];
+                                let className = setClassname(scale);
+                                let lodThreshold = setLodThreshold(scale);
+
+                                let tooltipContent = "<img class='tooltipThumbnail' src='" + Config.IMAGE_SERVER + "/" + objID + Config.INFO_THUMBNAIL + "'>" +
                                     "<div class='tooltipContainer'>" +
                                     "<div class='tooltipHeader'>" + mapName + " (" + dateCurrent + ")</div>" +
                                     "<div class='tooltipContent'>" + citation + "</div></div>";
 
-                                var timelineItemContent = '<div class="timelineItemTooltip noThumbnail" title="' + tooltipContent + '" data-xmin="' + xmin + '" data-ymin="' + ymin + '" data-xmax="' + xmax + '" data-ymax="' + ymax + '">' +
+                                let timelineItemContent = '<div class="timelineItemTooltip noThumbnail" title="' + tooltipContent + '" data-xmin="' + xmin + '" data-ymin="' + ymin + '" data-xmax="' + xmax + '" data-ymax="' + ymax + '">' +
                                     '<span class="thumbnailLabel">' + mapName + '</span>';
 
                                 timelineData.push({
@@ -628,13 +622,13 @@ require([
                     }); // END Deferred
                 }
 
-                function initUrlParamData(urlQueryObject) {
+  /*              function initUrlParamData(urlQueryObject) {
                     if (esriLang.isDefined(urlQueryObject)) {
                         if (esriLang.isDefined(urlQueryObject.selLat) && esriLang.isDefined(urlQueryObject.selLng)) {
                             if (urlQueryObject.selLat !== "" && urlQueryObject.selLng !== "") {
-                                var selLat = urlQueryObject.selLat;
-                                var selLng = urlQueryObject.selLng;
-                                var mp = new Point([selLat, selLng], new SpatialReference({
+                                let selLat = urlQueryObject.selLat;
+                                let selLng = urlQueryObject.selLng;
+                                let mp = new Point([selLat, selLng], new SpatialReference({
                                     wkid: 102100
                                 }));
                                 // add crosshair
@@ -644,8 +638,8 @@ require([
                                 currentMapExtent = map.extent;
 
                                 if (urlQueryObject.oids.length > 0) {
-                                    var qt = new QueryTask(Config.IMAGE_SERVER);
-                                    var q = new Query();
+                                    let qt = new QueryTask(Config.IMAGE_SERVER);
+                                    let q = new Query();
                                     q.returnGeometry = true;
                                     q.outFields = Config.OUTFIELDS;
                                     q.spatialRelationship = Query.SPATIAL_REL_INTERSECTS;
@@ -655,44 +649,44 @@ require([
                                         q.geometry = currentMapExtent.expand(Config.EXTENT_EXPAND);
                                     }
 
-                                    var deferreds = [];
+                                    let deferreds = [];
                                     // we need to fire off a query for 'each' OID, not all at once
                                     array.forEach(urlQueryObject.oids.split("|"), function (oid) {
                                         q.where = "OBJECTID = " + oid;
-                                        var deferred = qt.execute(q).addCallback(function (rs) {
+                                        let deferred = qt.execute(q).addCallback(function (rs) {
                                             return rs.features[0];
                                         });
                                         deferreds.push(deferred);
                                     });// END forEach
 
-                                    var layers = [];
+                                    let layers = [];
                                     all(deferreds).then(function (results) {
-                                        array.forEach(results, function (feature, index) {
-                                            var objID = feature.attributes.OBJECTID;
-                                            var mapName = feature.attributes[Config.ATTRIBUTE_MAP_NAME];
-                                            var extent = feature.geometry.getExtent();
-                                            var dateCurrent = feature.attributes[Config.ATTRIBUTE_DATE];
+                                        array.forEach(results, function (feature) {
+                                            let objID = feature.attributes.OBJECTID;
+                                            let mapName = feature.attributes[Config.ATTRIBUTE_MAP_NAME];
+                                            let extent = feature.geometry.getExtent();
+                                            let dateCurrent = feature.attributes[Config.ATTRIBUTE_DATE];
 
                                             if (dateCurrent === undefined || dateCurrent === null || dateCurrent === "") {
                                                 dateCurrent = Config.MSG_UNKNOWN;
                                             }
 
-                                            var scale = feature.attributes[Config.ATTRIBUTE_SCALE];
-                                            var scaleLabel = number.format(scale, {
+                                            let scale = feature.attributes[Config.ATTRIBUTE_SCALE];
+                                            let scaleLabel = number.format(scale, {
                                                 places: 0
                                             });
-                                            var lodThreshold = setLodThreshold(scale, Config.TIMELINE_LEGEND_VALUES, nScales, minScaleValue, maxScaleValue);
+                                            let lodThreshold = setLodThreshold(scale, Config.TIMELINE_LEGEND_VALUES, nScales, minScaleValue, maxScaleValue);
 
-                                            var mosaicRule = new MosaicRule({
+                                            let mosaicRule = new MosaicRule({
                                                 "method": MosaicRule.METHOD_CENTER,
                                                 "ascending": true,
                                                 "operation": MosaicRule.OPERATION_FIRST,
                                                 "where": "OBJECTID = " + objID
                                             });
-                                            var params = new ImageServiceParameters();
+                                            let params = new ImageServiceParameters();
                                             params.noData = 0;
                                             params.mosaicRule = mosaicRule;
-                                            var imageServiceLayer = new ArcGISImageServiceLayer(Config.IMAGE_SERVER, {
+                                            let imageServiceLayer = new ArcGISImageServiceLayer(Config.IMAGE_SERVER, {
                                                 imageServiceParameters: params,
                                                 opacity: 1.0
                                             });
@@ -734,13 +728,13 @@ require([
                         }
                     }
                 }
-
+*/
                 function updateTimelineContainerHeight() {
-                    var timelineContainerNode = dom.byId("timeline-container");
-                    var timelineContainerNodeGeom = domStyle.getComputedStyle(timelineContainerNode);
-                    var timelineContainerGeometry = domGeom.getContentBox(timelineContainerNode, timelineContainerNodeGeom);
+                    let timelineContainerNode = dom.byId("timeline-container");
+                    let timelineContainerNodeGeom = domStyle.getComputedStyle(timelineContainerNode);
+                    let timelineContainerGeometry = domGeom.getContentBox(timelineContainerNode, timelineContainerNodeGeom);
                     if (timelineContainerGeometry.h === 0) {
-                        var n = registry.byId("timeline-container").domNode;
+                        let n = registry.byId("timeline-container").domNode;
                         fx.animateProperty({
                             node: n,
                             duration: 1000,
@@ -756,200 +750,46 @@ require([
                     }
                 }
 
-
-                function thumbnailRenderCell(object, data, td, options) {
-                    var objID = object.objID;
-                    var mapName = object.name;
-                    var imprintYear = object.imprintYear;
-                    var downloadLink = object.downloadLink;
-                    var imgSrc = Config.IMAGE_SERVER + "/" + objID + Config.INFO_THUMBNAIL;
-
-                    return domConstruct.create("div", {
-                        "class": "renderedCell",
-                        "innerHTML": "<button class='rm-layer-btn' data-objectid='" + objID + "'> X </button>" +
-                            "<img class='rm-layer-icon' src='" + imgSrc + "'>" +
-                            "<div class='thumbnailMapName' data-mapname-objectid='" + objID + "'>" + mapName + objID + "</div>" +
-                            "<div class='thumbnailMapImprintYear'>" + imprintYear + "</div>" +
-                            "<div class='downloadLink'><a href='" + downloadLink + "' target='_parent'>Download deze kaart</a></div>",
-                        onclick: function (evt) {
-                            var objID = evt.target.getAttribute("data-objectid");
-                            var storeObj = store.query({
-                                objID: objID
-                            });
-
-                            if (calcite.hasClass(evt.target, "thumbnailMapName")) {
-                                var qt = new QueryTask(Config.IMAGE_SERVER);
-                                var q = new Query();
-                                q.returnGeometry = false;
-                                q.outFields = Config.OUTFIELDS;
-                                q.where = "OBJECTID = " + evt.target.getAttribute("data-mapname-objectid");
-                                qt.execute(q).addCallback(function (response) {
-                                    var feature = response.features[0].attributes;
-                                    domConstruct.create("div", {
-                                        "id": "grid-item-tooltip",
-                                        "style": {
-                                            left: 205 + "px",
-                                            top: evt.clientY + "px"
-                                        },
-                                        "innerHTML": "<div class='btn btn-small btn-transparent icon-ui-close-circled icon-ui-gray padding-left-0 padding-right-0 padding-trailer-0 padding-leader-0'></div>" + feature.Citation,
-                                        "onclick": function (evt) {
-                                            if (evt.target.getAttribute("class")) {
-                                                domConstruct.destroy("grid-item-tooltip");
-                                            }
-                                        }
-                                    }, win.body(), "first");
-                                });
-
-                            } else {
-                                map.removeLayer(storeObj[0].layer);
-                                store.remove(objID);
-                                if (store.data.length < 1) {
-                                    // no remaining items in the grid/store
-                                    map.graphics.remove(mouseOverGraphic);
-                                    map.graphics.clear();
-                                    addCrosshair(currentMapClickPoint);
-                                    hideLoadingIndicator();
-                                    showStepTwo();
-                                }
-                            }
-                        }
-                    });
-                }
-
-                function drawTimeline(data) {
-                    var filteredData = filterData(data, filter);
-                    topic.subscribe("/dnd/drop", function (source, nodes, copy, target) {
-                        var layers = [];
-                        query(".grid-map").forEach(domConstruct.destroy);
-                        query(".dgrid-row").forEach(function (node) {
-                            var row = target.grid.row(node);
-                            if (row) {
-                                layers.push(row.data.layer);
-                                map.removeLayer(row.data.layer);
-
-                                var lodThreshold = row.data.lodThreshold;
-                                var maskId = domAttr.get(node, "id") + "-mask";
-                                if (currentLOD <= lodThreshold) {
-                                    // disable row
-                                    if (dom.byId("" + maskId) === null) {
-                                        domConstruct.create("div", {
-                                            "id": "" + maskId,
-                                            "class": "grid-map",
-                                            "innerHTML": "<p style='text-align: center; margin-top: 20px'>" + Config.THUMBNAIL_VISIBLE_THRESHOLD_MSG + "</p>"
-                                        }, node, "first");
-                                    }
-                                } else {
-                                    // enable row
-                                    domConstruct.destroy("" + maskId);
-                                }
-                            }
-                        });
-
-                        var j = layers.length;
-                        while (j >= 0) {
-                            map.addLayer(layers[j]);
-                            j--;
-                        }
-                    });
-
-                    if (timeline === undefined) {
-                        if (urlQueryObject) {
-                            timelineOptions.start = new Date(urlQueryObject.minDate, 0, 0);
-                            timelineOptions.end = new Date(urlQueryObject.maxDate, 0, 0);
-                        }
-                        timeline = new links.Timeline(dom.byId("timeline"));
-                        timeline.draw(filteredData, timelineOptions);
-                        links.events.addListener(timeline, "ready", onTimelineReady);
-                        links.events.addListener(timeline, "select", onSelect);
-                        showStepTwo();
-                    } else {
-                        timeline.setData(filteredData);
-                        timeline.redraw();
-                    }
-
-                    $(".timelineItemTooltip").tooltipster({
-                        theme: "tooltipster-shadow",
-                        contentAsHTML: true,
-                        position: "right",
-                        offsetY: 20
-                    });
-
-                    $(".timeline-event").mouseenter(function (evt) {
-                        // TODO IE / What a mess!
-                        var xmin, ymin, xmax, ymax, extent, sfs;
-                        if (evt.target.children[0] !== undefined && evt.target.children[0].children[0] !== undefined) {
-                            if (evt.target.children[0].children[0].getAttribute("data-xmin")) {
-                                xmin = evt.target.children[0].children[0].getAttribute("data-xmin");
-                                xmax = evt.target.children[0].children[0].getAttribute("data-xmax");
-                                ymin = evt.target.children[0].children[0].getAttribute("data-ymin");
-                                ymax = evt.target.children[0].children[0].getAttribute("data-ymax");
-                            }
-                            // TODO
-                            var data = evt.currentTarget.childNodes[0].childNodes[0].dataset;
-                            if (data) {
-                                xmin = data.xmin;
-                                xmax = data.xmax;
-                                ymin = data.ymin;
-                                ymax = data.ymax;
-                            }
-                            extent = new Extent(xmin, ymin, xmax, ymax, new SpatialReference({
-                                wkid: 102100
-                            }));
-                            sfs = sfs = createMouseOverGraphic(
-                                new Color(Config.TIMELINE_ITEM_MOUSEOVER_GR_BORDER),
-                                new Color(Config.TIMELINE_ITEM_MOUSEOVER_GR_FILL));
-                            mouseOverGraphic = new Graphic(extent, sfs);
-                            map.graphics.add(mouseOverGraphic);
-                        }
-
-                    }).mouseleave(function () {
-                        map.graphics.remove(mouseOverGraphic);
-                        map.graphics.clear();
-                        addCrosshair(currentMapClickPoint);
-                    });
-                    hideLoadingIndicator();
-                }
-
                 function onSelect() {
-                    var sel = timeline.getSelection();
-                    var _timelineData = timeline.getData();
+                    let sel = timeline.getSelection();
+                    let _timelineData = timeline.getData();
                     if (sel.length) {
                         if (sel[0].row !== undefined) {
-                            var row = sel[0].row;
-                            var objID = _timelineData[row].objID;
+                            let row = sel[0].row;
+                            let objID = _timelineData[row].objID;
                             // check to see if the timeline item is in the store
-                            var objIDs = store.query({
+                            let objIDs = store.query({
                                 objID: objID
                             });
 
                             if (objIDs.length < 1) {
-                                var downloadLink = _timelineData[row].downloadLink;
-                                var lodThreshhold = _timelineData[row].lodThreshold;
-                                var whereClause = Config.IMAGE_SERVER_WHERE + objID;
-                                var queryTask = new QueryTask(Config.IMAGE_SERVER);
-                                var q = new Query();
+                                let downloadLink = _timelineData[row].downloadLink;
+                                let lodThreshhold = _timelineData[row].lodThreshold;
+                                let whereClause = Config.IMAGE_SERVER_WHERE + objID;
+                                let queryTask = new QueryTask(Config.IMAGE_SERVER);
+                                let q = new Query();
                                 q.returnGeometry = false;
                                 q.outFields = Config.OUTFIELDS;
                                 q.where = whereClause;
                                 queryTask.execute(q, function (rs) {
-                                    var extent = rs.features[0].geometry.getExtent();
-                                    var mapName = rs.features[0].attributes.Map_Name;
-                                    var dateCurrent = rs.features[0].attributes.DateCurrent;
+                                    let extent = rs.features[0].geometry.getExtent();
+                                    let mapName = rs.features[0].attributes[Config.ATTRIBUTE_MAP_NAME];
+                                    let dateCurrent = rs.features[0].attributes[Config.ATTRIBUTE_DATE];
 
                                     if (dateCurrent === null)
                                         dateCurrent = Config.MSG_UNKNOWN;
-                                    var scale = rs.features[0].attributes.Map_Scale;
-                                    var scaleLabel = number.format(scale, {
+                                    let scale = rs.features[0].attributes[Config.ATTRIBUTE_SCALE];
+                                    let scaleLabel = number.format(scale, {
                                         places: 0
                                     });
 
-                                    var mosaicRule = new MosaicRule({
+                                    let mosaicRule = new MosaicRule({
                                         "method": MosaicRule.METHOD_CENTER,
                                         "ascending": true,
                                         "operation": MosaicRule.OPERATION_FIRST,
                                         "where": whereClause
                                     });
-                                    var params = new ImageServiceParameters();
+                                    let params = new ImageServiceParameters();
                                     params.noData = 0;
                                     params.mosaicRule = mosaicRule;
                                     imageServiceLayer = new ArcGISImageServiceLayer(Config.IMAGE_SERVER, {
@@ -958,12 +798,12 @@ require([
                                     });
                                     map.addLayer(imageServiceLayer);
 
-                                    var _firstRow;
+                                    let _firstRow;
                                     if (query(".dgrid-row", grid.domNode)[0]) {
-                                        var rowId = query(".dgrid-row", grid.domNode)[0].id;
+                                        let rowId = query(".dgrid-row", grid.domNode)[0].id;
                                         _firstRow = rowId.split("-")[2];
                                     }
-                                    var firstRowObj = store.query({
+                                    let firstRowObj = store.query({
                                         objID: _firstRow
                                     });
 
@@ -993,6 +833,159 @@ require([
                     }
                 }
 
+                                function thumbnailRenderCell(object, data) {
+                                    let objID = object.objID;
+                                    let mapName = object.name;
+                                    let imprintYear = object.imprintYear;
+                                    let downloadLink = object.downloadLink;
+                                    let imgSrc = Config.IMAGE_SERVER + "/" + objID + Config.INFO_THUMBNAIL
+
+                                    return domConstruct.create("div", {
+                                        "class": "renderedCell",
+                                        "innerHTML": "<button class='rm-layer-btn' data-objectid='" + objID + "'> X </button>" +
+                                            "<img class='rm-layer-icon' src='" + imgSrc + "'>" +
+                                            "<div class='thumbnailMapName' data-mapname-objectid='" + objID + "'>" + mapName + "</div>" +
+                                            "<div class='thumbnailMapImprintYear'>" + imprintYear + "</div>" +
+                                            "<div class='downloadLink'><a href='" + downloadLink + "' target='_parent'>Download deze kaart</a></div>",
+                                        onclick: function (evt) {
+                                            let objID = evt.target.getAttribute("data-objectid");
+                                            let storeObj = store.query({
+                                                objID: objID
+                                            });
+
+                                            if (calcite.hasClass(evt.target, "thumbnailMapName")) {
+                                                let qt = new QueryTask(Config.IMAGE_SERVER);
+                                                let q = new Query();
+                                                q.returnGeometry = false;
+                                                q.outFields = Config.OUTFIELDS;
+                                                q.where = "OBJECTID = " + evt.target.getAttribute("data-mapname-objectid");
+                                                qt.execute(q).addCallback(function (response) {
+                                                    let feature = response.features[0].attributes;
+                                                    domConstruct.create("div", {
+                                                        "id": "grid-item-tooltip",
+                                                        "style": {
+                                                            left: 205 + "px",
+                                                            top: evt.clientY + "px"
+                                                        },
+                                                        "innerHTML": "<div class='btn btn-small btn-transparent icon-ui-close-circled icon-ui-gray padding-left-0 padding-right-0 padding-trailer-0 padding-leader-0'></div>" + feature.Citation,
+                                                        "onclick": function (evt) {
+                                                            if (evt.target.getAttribute("class")) {
+                                                                domConstruct.destroy("grid-item-tooltip");
+                                                            }
+                                                        }
+                                                    }, win.body(), "first");
+                                                });
+
+                                            } else {
+                                                map.removeLayer(storeObj[0].layer);
+                                                store.remove(objID);
+                                                if (store.data.length < 1) {
+                                                    // no remaining items in the grid/store
+                                                    map.graphics.remove(mouseOverGraphic);
+                                                    map.graphics.clear();
+                                                    addCrosshair(currentMapClickPoint);
+                                                    hideLoadingIndicator();
+                                                    showStepTwo();
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+
+                                function drawTimeline(data) {
+                                    let filteredData = filterData(data, filter);
+                                    topic.subscribe("/dnd/drop", function (source, nodes, copy, target) {
+                                        let layers = [];
+                                        query(".grid-map").forEach(domConstruct.destroy);
+                                        query(".dgrid-row").forEach(function (node) {
+                                            let row = target.grid.row(node);
+                                            if (row) {
+                                                layers.push(row.data.layer);
+                                                map.removeLayer(row.data.layer);
+
+                                                let lodThreshold = row.data.lodThreshold;
+                                                let maskId = domAttr.get(node, "id") + "-mask";
+                                                if (currentLOD <= lodThreshold) {
+                                                    // disable row
+                                                    if (dom.byId("" + maskId) === null) {
+                                                        domConstruct.create("div", {
+                                                            "id": "" + maskId,
+                                                            "class": "grid-map",
+                                                            "innerHTML": "<p style='text-align: center; margin-top: 20px'>" + Config.THUMBNAIL_VISIBLE_THRESHOLD_MSG + "</p>"
+                                                        }, node, "first");
+                                                    }
+                                                } else {
+                                                    // enable row
+                                                    domConstruct.destroy("" + maskId);
+                                                }
+                                            }
+                                        });
+
+                                        let j = layers.length;
+                                        while (j >= 0) {
+                                            map.addLayer(layers[j]);
+                                            j--;
+                                        }
+                                    });
+
+                                    if (timeline === undefined) {
+                                        if (urlQueryObject) {
+                                            timelineOptions.start = new Date(urlQueryObject.minDate, 0, 0);
+                                            timelineOptions.end = new Date(urlQueryObject.maxDate, 0, 0);
+                                        }
+                                        timeline = new links.Timeline(dom.byId("timeline"));
+                                        timeline.draw(filteredData, timelineOptions);
+                                        links.events.addListener(timeline, "ready", onTimelineReady);
+                                        links.events.addListener(timeline, "select", onSelect);
+                                        showStepTwo();
+                                    } else {
+                                        timeline.setData(filteredData);
+                                        timeline.redraw();
+                                    }
+
+                                    $(".timelineItemTooltip").tooltipster({
+                                        theme: "tooltipster-shadow",
+                                        contentAsHTML: true,
+                                        position: "right",
+                                        offsetY: 20
+                                    });
+
+                                    $(".timeline-event").mouseenter(function (evt) {
+                                        // TODO IE / What a mess!
+                                        let xmin, ymin, xmax, ymax, extent, sfs;
+                                        if (evt.target.children[0] !== undefined && evt.target.children[0].children[0] !== undefined) {
+                                            if (evt.target.children[0].children[0].getAttribute("data-xmin")) {
+                                                xmin = evt.target.children[0].children[0].getAttribute("data-xmin");
+                                                xmax = evt.target.children[0].children[0].getAttribute("data-xmax");
+                                                ymin = evt.target.children[0].children[0].getAttribute("data-ymin");
+                                                ymax = evt.target.children[0].children[0].getAttribute("data-ymax");
+                                            }
+                                            // TODO
+                                            let data = evt.currentTarget.childNodes[0].childNodes[0].dataset;
+                                            if (data) {
+                                                xmin = data.xmin;
+                                                xmax = data.xmax;
+                                                ymin = data.ymin;
+                                                ymax = data.ymax;
+                                            }
+                                            extent = new Extent(xmin, ymin, xmax, ymax, new SpatialReference({
+                                                wkid: 102100
+                                            }));
+                                            sfs = sfs = createMouseOverGraphic(
+                                                new Color(Config.TIMELINE_ITEM_MOUSEOVER_GR_BORDER),
+                                                new Color(Config.TIMELINE_ITEM_MOUSEOVER_GR_FILL));
+                                            mouseOverGraphic = new Graphic(extent, sfs);
+                                            map.graphics.add(mouseOverGraphic);
+                                        }
+
+                                    }).mouseleave(function () {
+                                        map.graphics.remove(mouseOverGraphic);
+                                        map.graphics.clear();
+                                        addCrosshair(currentMapClickPoint);
+                                    });
+                                    hideLoadingIndicator();
+                                }
+
                 function onTimelineReady() {
                     // if the grid is visible, step 3 is visible, so hide step 2
                     if ($(".gridContainer").css("display") === "block") {
@@ -1015,7 +1008,7 @@ require([
                             // summary:
                             //		Given an item already in the store, creates a copy of it.
                             //		(i.e., shallow-clones the item sans id, then calls add)
-                            var k, obj = {}, id, idprop = this.idProperty, i = 0;
+                            let k, obj = {}, id, idprop = this.idProperty, i = 0;
                             for (k in object) {
                                 obj[k] = object[k];
                             }
@@ -1044,7 +1037,7 @@ require([
 
                 function calculateOrder(store, object, before, orderField) {
                     // Calculates proper value of order for an item to be placed before another
-                    var afterOrder,
+                    let afterOrder,
                         beforeOrder = 0;
                     if (!orderField) {
                         orderField = "id";
@@ -1053,7 +1046,7 @@ require([
                         // calculate midpoint between two items' orders to fit this one
                         afterOrder = before[orderField];
                         store.query({}, {}).forEach(function (object) {
-                            var ord = object[orderField];
+                            let ord = object[orderField];
                             if (ord > beforeOrder && ord < afterOrder) {
                                 beforeOrder = ord;
                             }
@@ -1063,7 +1056,7 @@ require([
                         // find maximum order and place this one after it
                         afterOrder = 0;
                         store.query({}, {}).forEach(function (object) {
-                            var ord = object[orderField];
+                            let ord = object[orderField];
                             if (ord > afterOrder) {
                                 afterOrder = ord;
                             }
@@ -1073,7 +1066,7 @@ require([
                 }
 
                 function setClassname(scale) {
-                    var className;
+                    let className;
                     if (scale <= TOPO_MAP_SCALES[4].value) {
                         className = "one";	// 0 - 12000
                     } else if (scale > TOPO_MAP_SCALES[4].value && scale <= TOPO_MAP_SCALES[3].value) {
@@ -1089,8 +1082,8 @@ require([
                 }
 
                 function setLodThreshold(scale) {
-                    var _lodThreshold;
-                    var i = nScales;
+                    let _lodThreshold;
+                    let i = nScales;
                     while (i > 0) {
                         if (scale <= minScaleValue) {
                             _lodThreshold = TOPO_MAP_SCALES[TOPO_MAP_SCALES.length - 1].lodThreshold;
@@ -1125,13 +1118,13 @@ require([
                 }
 
                 function createMouseOverGraphic(borderColor, fillColor) {
-                    var sfs = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+                    let sfs = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, borderColor, Config.IMAGE_BORDER_WIDTH), fillColor);
                     return sfs;
                 }
 
                 function addCrosshair(mp) {
-                    var crosshairSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CROSS, Config.CROSSHAIR_SIZE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color(Config.CROSSHAIR_FILL_COLOR), Config.CROSSHAIR_OPACITY));
+                    let crosshairSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CROSS, Config.CROSSHAIR_SIZE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color(Config.CROSSHAIR_FILL_COLOR), Config.CROSSHAIR_OPACITY));
                     if (crosshairGraphic) {
                         map.graphics.remove(crosshairGraphic);
                     }
@@ -1174,16 +1167,16 @@ require([
                  *
                  *********************/
                 function gridDataChangeHandler(evt) {
-                    var diff = 1 - evt.value;
+                    let diff = 1 - evt.value;
                     evt.cell.row.data.layer.setOpacity(diff);
                     //console.debug("cell: ", evt.cell, evt.cell.row.id, evt.cell.row.data.layer);
                 }
 
                 function gridRefreshHandler(event) {
                     array.forEach(event.grid.store.data, function (node) {
-                        var row = grid.row(node);
-                        var lodThreshold = row.data.lodThreshold;
-                        var maskId = "grid-row-" + row.data.objID + "-mask";
+                        let row = grid.row(node);
+                        let lodThreshold = row.data.lodThreshold;
+                        let maskId = "grid-row-" + row.data.objID + "-mask";
                         if (currentLOD <= lodThreshold) {
                             domConstruct.create("div", {
                                 id: "" + maskId,
@@ -1199,9 +1192,9 @@ require([
                 function gridEnterCellHandler(evt) {
                     if (mouseOverGraphic)
                         map.graphics.remove(mouseOverGraphic);
-                    var row = grid.row(evt);
-                    var extent = row.data.extent;
-                    var sfs = createMouseOverGraphic(
+                    let row = grid.row(evt);
+                    let extent = row.data.extent;
+                    let sfs = createMouseOverGraphic(
                         new Color(Config.SIDEBAR_MAP_MOUSEOVER_GR_BORDER),
                         new Color(Config.SIDEBAR_MAP_MOUSEOVER_GR_FILL));
                     mouseOverGraphic = new Graphic(extent, sfs);
@@ -1221,8 +1214,8 @@ require([
          *********************/
 
         function getUserProfile(credential) {
-            var DEPLOY_ROOT = getDeployRoot(window.location.host);
-            var PORTAL_URL = "//" + DEPLOY_ROOT + "." + Config.DOMAIN;
+            let DEPLOY_ROOT = getDeployRoot(window.location.host);
+            let PORTAL_URL = "//" + DEPLOY_ROOT + "." + Config.DOMAIN;
 
             esriRequest({
                 url: "https://" + PORTAL_URL + "/sharing/rest/community/users/" + credential.userId + "?f=json",
@@ -1231,17 +1224,17 @@ require([
                 }
             }).then(function (response) {
                 // set user profile thumbnail
-                var userProfileThumbnailUrl = null;
+                let userProfileThumbnailUrl = null;
                 if (!esriLang.isDefined(response.thumbnail)) {
                     userProfileThumbnailUrl = 'images/profile-pictures.png';
                 } else {
                     userProfileThumbnailUrl = "https://" + PORTAL_URL + "/sharing/rest/community/users/" + credential.userId + "/info/" + response.thumbnail + "?token=" + credential.token;
                 }
                 // set user thumbnail
-                var userThumbnailEle = query(".user-thumbnail")[0];
+                let userThumbnailEle = query(".user-thumbnail")[0];
                 domAttr.set(userThumbnailEle, "src", userProfileThumbnailUrl);
                 // set username label
-                var userNameEle = query(".user-name")[0];
+                let userNameEle = query(".user-name")[0];
                 userNameEle.innerHTML = response.fullName;
             });
         }
@@ -1253,14 +1246,14 @@ require([
          *********************/
 
         function initBaseMap(urlQueryObject) {
-            var centerpoint = new Point({
+            let centerpoint = new Point({
             x: Config.BASEMAP_INIT_X,
             y: Config.BASEMAP_INIT_Y,
             spatialReference: 28992
           });
-            var _lod;
+            let _lod;
             _lod = Config.BASEMAP_INIT_ZOOM;
-            var createMapOptions = {
+            let createMapOptions = {
                 mapOptions: {
                   slider: true,
                   center: centerpoint,
@@ -1272,7 +1265,7 @@ require([
               };
 
               // DELETED SCRIPT//
-              //            var _lat, _lng, _lod;
+              //            let _lat, _lng, _lod;
               //            if (urlQueryObject) {
               //                _lat = urlQueryObject.lat;
               //                _lng = urlQueryObject.lng;
@@ -1302,13 +1295,13 @@ require([
         }
 
         function initGeocoderDijit(srcRef) {
-            var geocoders = [{
+            let geocoders = [{
               url: Config.GEOCODER_URL,
               name: Config.GEOCODER_NAME,
               singleLineFieldName: Config.GEOCODER_SINGLE_LINE_FIELD_NAME,
               placeholder: Config.GEOCODER_PLACEHOLDER_TEXT
             }];
-            var geocoder = new Geocoder({
+            let geocoder = new Geocoder({
                 map: map,
                 geocoders: geocoders,
                 autoComplete: true,
@@ -1321,7 +1314,7 @@ require([
 
         function mapClickHandler(evt) {
             console.debug("mapClickHandler")
-            var crosshairSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CROSS, Config.CROSSHAIR_SIZE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color(Config.CROSSHAIR_FILL_COLOR), Config.CROSSHAIR_OPACITY));
+            let crosshairSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CROSS, Config.CROSSHAIR_SIZE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color(Config.CROSSHAIR_FILL_COLOR), Config.CROSSHAIR_OPACITY));
             currentMapClickPoint = evt.mapPoint;
             currentLOD = map.getLevel();
             if (crosshairGraphic) {
@@ -1336,9 +1329,9 @@ require([
             currentMapExtent = evt.extent;
             currentLOD = evt.lod.level;
             query('.dgrid-row', grid.domNode).forEach(function (node) {
-                var row = grid.row(node);
-                var lodThreshold = row.data.lodThreshold;
-                var maskId = domAttr.get(node, "id") + "-mask";
+                let row = grid.row(node);
+                let lodThreshold = row.data.lodThreshold;
+                let maskId = domAttr.get(node, "id") + "-mask";
                 if (currentLOD <= lodThreshold) {
                     // disable row
                     if (dom.byId("" + maskId) === null) {
@@ -1370,8 +1363,8 @@ require([
          *********************/
 
         function checkSignIn() {
-            var deferred = new Deferred();
-            var oauthConfig = _registerOAuthConfig();
+            let deferred = new Deferred();
+            let oauthConfig = _registerOAuthConfig();
             esriId.checkSignInStatus(oauthConfig.portalUrl).then(function (x) {
                 deferred.resolve(x);
             }).otherwise(function (y) {
@@ -1386,12 +1379,12 @@ require([
         }
 
         function _registerOAuthConfig() {
-            var deployRoot = getDeployRoot(window.location.host);
-            var sharingUrl = "https://" + deployRoot + "." + Config.DOMAIN;
-            var left = (screen.width - 800) / 2;
-            var top = (screen.height - 480) / 4;
+            let deployRoot = getDeployRoot(window.location.host);
+            let sharingUrl = "https://" + deployRoot + "." + Config.DOMAIN;
+            let left = (screen.width - 800) / 2;
+            let top = (screen.height - 480) / 4;
             esriId.useSignInPage = false;
-            var oauthConfig = new OAuthInfo({
+            let oauthConfig = new OAuthInfo({
                 appId: Config.APP_ID,
                 // Uncomment this line to prevent the user's signed in state from being shared
                 // with other apps on the same domain with the same authNamespace value.
@@ -1411,8 +1404,8 @@ require([
          *********************/
 
         function shareFacebook() {
-            var url = setSharingUrl();
-            var options = '&p[title]=' + encodeURIComponent($('#title').text())
+            let url = setSharingUrl();
+            let options = '&p[title]=' + encodeURIComponent($('#title').text())
                 + '&p[summary]=' + encodeURIComponent($('#subtitle').text())
                 + '&p[url]=' + encodeURIComponent(url)
                 + '&p[images][0]=' + encodeURIComponent($("meta[property='og:image']").attr("content"));
@@ -1421,8 +1414,8 @@ require([
         }
 
         function shareTwitter() {
-            var url = setSharingUrl();
-            var options = null;
+            let url = setSharingUrl();
+            let options = null;
             requestShortUrl(url).then(function (response) {
                 options = 'text=' + encodeURIComponent($('#title').text()) +
                     '&url=' + encodeURIComponent(response) +
@@ -1433,7 +1426,7 @@ require([
         }
 
         function shareBitly() {
-            var url = setSharingUrl();
+            let url = setSharingUrl();
             requestShortUrl(url).then(function (response) {
                 $("#bitlyLoad").fadeOut();
                 $("#bitlyInput").fadeIn();
@@ -1444,12 +1437,12 @@ require([
         }
 
         function aboutApplication() {
-            var aboutModalBtn = query(".foo-modal")[0];
+            let aboutModalBtn = query(".foo-modal")[0];
             aboutModalBtn.click();
         }
 
         function requestShortUrl(url) {
-            var esriUrlShortener = 'https://arcg.is/prod/shorten?callback=?',
+            let esriUrlShortener = 'https://arcg.is/prod/shorten?callback=?',
                 targetUrl = url || document.location.href,
                 deferred = new Deferred();
 
@@ -1470,7 +1463,7 @@ require([
         }
 
         function setSharingUrl() {
-            var mapClickX,
+            let mapClickX,
                 mapClickY,
                 timelineDateRange = "",
                 minDate = "",
@@ -1487,9 +1480,9 @@ require([
                 mapClickY = currentMapClickPoint.y;
             }
 
-            var lat = map.extent.getCenter().getLatitude();
-            var lng = map.extent.getCenter().getLongitude();
-            var zoomLevel = map.getLevel();
+            let lat = map.extent.getCenter().getLatitude();
+            let lng = map.extent.getCenter().getLongitude();
+            let zoomLevel = map.getLevel();
 
             if (timeline) {
                 timelineDateRange = timeline.getVisibleChartRange();
@@ -1498,7 +1491,7 @@ require([
             }
 
             query(".dgrid-row", grid.domNode).forEach(function (node) {
-                var row = grid.row(node);
+                let row = grid.row(node);
                 objectIDs += row.data.objID + "|";
             });
             objectIDs = objectIDs.substr(0, objectIDs.length - 1);
@@ -1508,11 +1501,11 @@ require([
             });
             filters = filters.substr(0, filters.length - 1);
 
-            var protocol = window.location.protocol;
-            var host = window.location.host;
-            var pathName = window.location.pathname;
-            var fileName = "";
-            var pathArray = window.location.pathname.split("/");
+            let protocol = window.location.protocol;
+            let host = window.location.host;
+            let pathName = window.location.pathname;
+            let fileName = "";
+            let pathArray = window.location.pathname.split("/");
             if (pathArray[pathArray.length - 1] !== "index.html") {
                 fileName = "index.html";
             } else {
@@ -1533,7 +1526,7 @@ require([
 
         function copyInput() {
             /* Get the text field */
-            var copyText = $("#bitlyInput")[0];
+            let copyText = $("#bitlyInput")[0];
             /* Select the text field */
             copyText.select();
             /* Copy the text inside the text field */
@@ -1582,8 +1575,8 @@ require([
         }
 
         function fadeIn(node) {
-            var _node = query(node)[0];
-            var fadeArgs = {
+            let _node = query(node)[0];
+            let fadeArgs = {
                 node: _node,
                 duration: 600
             };
@@ -1591,8 +1584,8 @@ require([
         }
 
         function fadeOut(node) {
-            var _node = query(node)[0];
-            var fadeArgs = {
+            let _node = query(node)[0];
+            let fadeArgs = {
                 node: _node,
                 duration: 600
             };
@@ -1600,13 +1593,13 @@ require([
         }
 
         function showLoadingIndicator() {
-            var loading = dom.byId("loadingImg");
+            let loading = dom.byId("loadingImg");
             esri.show(loading);
             map.disableMapNavigation();
         }
 
         function hideLoadingIndicator() {
-            var loading = dom.byId("loadingImg");
+            let loading = dom.byId("loadingImg");
             esri.hide(loading);
             map.enableMapNavigation();
         }
@@ -1637,7 +1630,7 @@ require([
 
         function formatMonth(date) {
             if (date instanceof Date) {
-                var month = date.getMonth();
+                let month = date.getMonth();
                 if (month === 0) {
                     return "01";
                 } else if (month === 1) {
