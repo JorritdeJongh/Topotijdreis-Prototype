@@ -109,10 +109,11 @@ var Config = {
 
      /*
      Use the following lines to specify a custom locator service, its name and its placeholder text. */
-    "GEOCODER_URL": "https://services.arcgisonline.nl/arcgis/rest/services/Geocoder_BAG_RD/GeocodeServer",
+    "GEOCODER_URL": "https://services.arcgisonline.nl/arcgis/rest/services/Geocoder_BAG_RD/GeocodeServer/",
     "GEOCODER_NAME": "BAG_RD_NEW",
     "GEOCODER_SINGLE_LINE_FIELD_NAME": "SingleLine",
     "GEOCODER_PLACEHOLDER_TEXT": "Zoek een plaats door hier te typen",
+
     /*
     If you desire to use the ArcGIS global geocoder, disable the custom locator in the main.js file and set following statement to true */
 
@@ -130,37 +131,37 @@ var Config = {
 
         "TIMELINE_LEGEND_VALUES": [
             {
-                "label": "250,000",
+                "label": "100,000+",
                 "value": 250000,
-                "color": "#0054ff",
+                "color": "#03045E",
                 "className": "five",
                 "lodThreshold": 5
             },
             {
-                "label": "100,000",
+                "label": "50,000 - 100,000",
                 "value": 100000,
-                "color": "#0076FF",
+                "color": "#0077B6",
                 "className": "four",
-                "lodThreshold": 6
+                "lodThreshold": 5
             },
             {
-                "label": "50,000",
+                "label": "25,000 - 50,000",
                 "value": 50000,
-                "color": "#00c3ff",
+                "color": "#00B4D8",
                 "className": "three",
-                "lodThreshold": 7
+                "lodThreshold": 5
             },
             {
-                "label": "25,000",
+                "label": "10,000 - 25,000",
                 "value": 25000,
-                "color": "#00f9ff",
+                "color": "#90E0EF",
                 "className": "two",
-                "lodThreshold": 8
+                "lodThreshold": 5
             },
             {
-                "label": "10,000",
+                "label": "1 - 10,000",
                 "value": 10000,
-                "color": "#00ffac",
+                "color": "#CAF0F8",
                 "className": "one",
                 "lodThreshold": 9
             }
@@ -187,8 +188,8 @@ var Config = {
     /* timeline height */
     "TIMELINE_HEIGHT": "240",
     /* */
-    "TIMELINE_ZOOM_MIN": 201536000000,
-    "TIMELINE_ZOOM_MAX": 4153600000000,
+    "TIMELINE_ZOOM_MIN": 150000000000,
+    "TIMELINE_ZOOM_MAX": 5000000000000,
     /* If true, events will be clustered together when zooming out. */
     "TIMELINE_CLUSTER": false,
     /* Enable a navigation menu with buttons to move and zoom the timeline. */

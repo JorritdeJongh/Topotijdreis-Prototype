@@ -55,6 +55,7 @@ require([
     "esri/arcgis/Portal",
     "esri/arcgis/utils",
     "esri/dijit/Geocoder",
+    "esri/dijit/Search",
     "esri/geometry/Extent",
     "esri/geometry/Point",
     "esri/geometry/webMercatorUtils",
@@ -72,6 +73,7 @@ require([
     "esri/Color",
     "esri/tasks/query",
     "esri/tasks/QueryTask",
+    "esri/tasks/locator",
     "esri/urlUtils",
     "esri/request",
     "esri/lang",
@@ -80,9 +82,9 @@ require([
     function (win, array, declare, fx, lang,
         Deferred, aspect, dom, domAttr, domClass, domConstruct, domGeom, domStyle, ioQuery, json, mouse, number, on, parser, all, query, ready, topic, Observable, Memory,
         DnD, Grid, editor, Selection, Keyboard, mouseUtil, Button, HorizontalSlider, BorderContainer, ContentPane, registry,
-        OAuthInfo, arcgisPortal, arcgisUtils, Geocoder, Extent, Point, webMercatorUtils, esriId, SpatialReference, Graphic, ArcGISDynamicMapServiceLayer,
+        OAuthInfo, arcgisPortal, arcgisUtils, Geocoder, Search, Extent, Point, webMercatorUtils, esriId, SpatialReference, Graphic, ArcGISDynamicMapServiceLayer,
         ArcGISImageServiceLayer, ImageServiceParameters, MosaicRule, Map, SimpleFillSymbol, SimpleLineSymbol, SimpleMarkerSymbol, Color,
-        Query, QueryTask, urlUtils, esriRequest, esriLang) {
+        Query, QueryTask, Locator, urlUtils, esriRequest, esriLang) {
 
         let map,
             imageServiceLayer,
@@ -1190,22 +1192,20 @@ require([
         }
 
         function initGeocoderDijit(srcRef) {
-            let geocoders = [{
-              url: Config.GEOCODER_URL,
-              name: Config.GEOCODER_NAME,
-              singleLineFieldName: Config.GEOCODER_SINGLE_LINE_FIELD_NAME,
-              placeholder: Config.GEOCODER_PLACEHOLDER_TEXT
-            }];
-            let geocoder = new Geocoder({
-                map: map,
-                geocoders: geocoders,
-                autoComplete: true,
-                showResults: true,
-                searchDelay: 100,
-                arcgisGeocoder: Config.arcgisGeocoder
+            let geocoder = new Search({
+              sources:    [{  locator: new Locator(Config.GEOCODER_URL),
+                              singleLineFieldName: Config.GEOCODER_SINGLE_LINE_FIELD_NAME,
+                              name: Config.GEOCODER_NAME,
+                              placeholder: Config.GEOCODER_PLACEHOLDER_TEXT
+                          }],
+              map: map,
+              autoComplete: true,
+              enableSuggestions: true,
+              showInfoWindowOnSelect: false,
+              enableHighlight: false
             }, srcRef);
             geocoder.startup();
-        }
+          }
 
         function mapClickHandler(evt) {
             console.debug("mapClickHandler")
