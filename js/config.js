@@ -115,9 +115,6 @@ var Config = {
     "GEOCODER_PLACEHOLDER_TEXT": "Zoek een plaats door hier te typen",
 
     /*
-    If you desire to use the ArcGIS global geocoder, disable the custom locator in the main.js file and set following statement to true */
-
-    "arcgisGeocoder": false,
     /**************************************************************************
      *
      * Timeline Container
@@ -215,7 +212,7 @@ var Config = {
     "IMAGE_SERVER_JSON": "?culture=en&f=json&token=",
 
     /* Image service */
-    "IMAGE_SERVER": "https://edemo6.esri.nl/server/rest/services/Topotijdreis/TopoServer/ImageServer",
+    "IMAGE_SERVER": "https://edemo6.esri.nl/server/rest/services/Topotijdreis/TTR/ImageServer",
     /* outfields */
     "OUTFIELDS": ['*'],
     /* WHERE clause */
@@ -244,6 +241,14 @@ var Config = {
     "ATTRIBUTE_DOWNLOAD_LINK": "Dlink",
     /* Map citation <String> or <attribute field> */
     "ATTRIBUTE_CITATION": "Citation",
+    /* Map Collection */
+    "ATTRIBUTE_COLLECTION": "Collection",
+    /* Inventory Number */
+    "ATTRIBUTE_INV_NUMBER": "InventNr",
+    /* Source link field */
+    "ATTRIBUTE_BRON": "DLSource",
+    /* Source name field */
+    "ATTRIBUTE_BRON_NAAM": "DLSrc_Nm",
 
     /**************************************************************************
      *

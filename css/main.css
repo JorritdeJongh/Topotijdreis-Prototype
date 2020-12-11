@@ -39,7 +39,7 @@ body{overflow:hidden}
 .save-success-msg{padding:1em;z-index:100;position:absolute;width:400px;height:90px;background-color:#ddeedbf7;border:1px solid #9bc19c;right:20px;top:20px}
 .legend-label{font-size:.8em!important;color:#5d5d5d!important}
 
-#grid-item-tooltip{z-index:1000;height:75px;width:220px;margin-left:60px;position:absolute;font-size:.75em;border-radius:5px;background:#fff;box-shadow:0 0 14px rgba(0,0,0,0.3);color:#2c2c2c;line-height:16px;padding:8px 10px;opacity:.97}
+#grid-item-tooltip{z-index:1000;height:125px;width:220px;margin-left:60px;position:absolute;font-size:.75em;border-radius:5px;background:#fff;box-shadow:0 0 14px rgba(0,0,0,0.3);color:#2c2c2c;line-height:16px;padding:8px 10px;opacity:.97}
 .rm-tooltip-btn{width:24px;height:24px;position:absolute;left:-12px;top:-12px;border-radius:12px;background-color:#000;color:#fff;border:1px solid #ffb2b2;opacity:.3;font-size:.8em}
 .rm-tooltip-btn:hover{background-color:#3f3f3f;color:#fff;border:1px solid #ff1824;opacity:.95}
 .customTooltip{width:300px}
@@ -127,7 +127,7 @@ body{overflow:hidden}
 
 #loadingImg{position:absolute;left:50%;top:50%;z-index:100;opacity:.55}
 .esriSimpleSliderTL{top:10px!important;left:10px!important}
-.geocoder-container{position:absolute;top:65px;left:35px;width:100%}
+.geocoder-container{position:absolute;top:70px;left:35px;width:100%}
 
 #geocoder{margin-top:3em}
 .simpleGeocoder
@@ -231,6 +231,10 @@ body{overflow:hidden}
 .rm-layer-btn{position:absolute!important;left:350px!important;margin-top:-10px!important;border-radius:15px;opacity:1}
 .rm-layer-btn:hover{opacity:.95}
 .rm-layer-icon{width:90px;float:left;padding:4px}
+.tooltipCitation
+.tooltipCollection
+.tooltipInventNr
+.sourceLink
 .dgrid-row{margin-bottom:20px!important;margin-left:20px;height:120px;border-radius:4px}table > tr > td
 .dgrid-cell
 .dgrid-cell-padding
