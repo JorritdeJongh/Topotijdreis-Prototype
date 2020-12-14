@@ -246,9 +246,9 @@ var Config = {
     /* Inventory Number */
     "ATTRIBUTE_INV_NUMBER": "InventNr",
     /* Source link field */
-    "ATTRIBUTE_BRON": "DLSource",
+    "ATTRIBUTE_BRON": "Bron",
     /* Source name field */
-    "ATTRIBUTE_BRON_NAAM": "DLSrc_Nm",
+    "ATTRIBUTE_BRON_URL": "BronUrl",
 
     /**************************************************************************
      *

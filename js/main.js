@@ -598,8 +598,8 @@ require([
                                 let citation = feature.attributes[Config.ATTRIBUTE_CITATION];
                                 let collection = feature.attributes[Config.ATTRIBUTE_COLLECTION];
                                 let inventNr = feature.attributes[Config.ATTRIBUTE_INV_NUMBER];
-                                let bronURL = feature.attributes[Config.ATTRIBUTE_BRON];
-                                let bronNaam = feature.attributes[Config.ATTRIBUTE_BRON_NAAM];
+                                let bron = feature.attributes[Config.ATTRIBUTE_BRON];
+                                let bronUrl = feature.attributes[Config.ATTRIBUTE_BRON_URL];
                                 let className = setClassname(scale);
                                 let lodThreshold = setLodThreshold(scale);
 
@@ -768,11 +768,10 @@ require([
                                                             left: 205 + "px",
                                                             top: evt.clientY + "px"
                                                         },
-                                                        "innerHTML": "<div class='btn btn-small btn-transparent icon-ui-close-circled icon-ui-gray padding-left-0 padding-right-0 padding-trailer-0 padding-leader-0'></div>" +
-                                                        "<div class='tooltipCitation'>" + "Citatie:" + feature.Citation + "</div>" +
-                                                        "<div class='tooltipCollection'>" + "Collectie:" + feature.Collection + "</div>" +
-                                                        "<div class='tooltipInventNr'>" + "Inventaris Nr:" + feature.InventNr + "</div>" +
-                                                        "<div class='tooltipSrcName'>" + "Naam Archief:" + feature.BronNaam + "</div>",
+                                                        "innerHTML": "<div class='btn btn-small btn-transparent icon-ui-close-circled icon-ui-gray padding-left-0 padding-right-0 padding-trailer-0 padding-leader-0'></div>" + "Extra Informatie" +
+                                                        "<div class='tooltipCitation'>" + "Citatie:" + "  " + feature.Citation + "</div>" +
+                                                        "<div class='tooltipCollection'>" + "Collectie:" + "  " + feature.Collection + "</div>" +
+                                                        "<div class='tooltipInventNr'>" + "Inventaris Nr:" + "  " + feature.InventNr + "</div>",
                                                         "onclick": function (evt) {
                                                             if (evt.target.getAttribute("class")) {
                                                                 domConstruct.destroy("grid-item-tooltip");
