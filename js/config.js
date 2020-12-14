@@ -1,7 +1,7 @@
 var Config = {
     // Register your app with your own APP ID
     // https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/accessing-arcgis-online-services/
-    "APP_ID": "qki1YAkhwF1Fu8C8",
+    "APP_ID": "iuO2VsBjOckrCOxY",
 
     "DOMAIN": "arcgis.com",
 
