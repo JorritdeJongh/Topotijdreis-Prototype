@@ -3,7 +3,7 @@ var Config = {
     // https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/accessing-arcgis-online-services/
     "APP_ID": "iuO2VsBjOckrCOxY",
 
-    "DOMAIN": "arcgis.com",
+    "DOMAIN": "edemo6.esri.nl",
 
     // DO NOT MODIFY
     "USER_NOT_SIGNED_IN": "User is not signed in.",
