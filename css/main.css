@@ -12,10 +12,10 @@ body{overflow:hidden}
 .social
 .popover-title{display:none}
 .bitlyInputContainer{float:left}
-#bitlyInput{width:150px;margin-top:2em;color:#757575!important}
+#bitlyInput{width:130px;margin-top:-.1em;color:#757575!important}
 #bitlyInput::-ms-clear{display:none;}
 .copy-btn{float:right}
-.popover{top:-5px;right:360px;width:270px;max-width:280px;left:auto;display:none;margin-top:5px;height:55px}
+.popover{right:75px;width:270px;max-width:280px;left:auto;display:none;margin-top:5px;height:55px}
 .arrow{top:50%;right:-11px;margin-top:-11px;border-left-color:#999;border-left-color:rgba(0,0,0,0.25);border-width:11px;border-bottom:12px solid transparent;margin-top:-12px;width:0;border-left:12px solid #f7f7f7;height:0;border-top:12px solid transparent;top:50%;position:absolute}
 .popover-content{padding:9px 14px}
 .sidebar{height:100%!important;width:395px;margin:0;overflow:hidden;background-color:rgba(204, 255, 255, 0.2);}
