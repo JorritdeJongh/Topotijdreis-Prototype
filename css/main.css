@@ -39,7 +39,7 @@ body{overflow:hidden}
 .save-success-msg{padding:1em;z-index:100;position:absolute;width:400px;height:90px;background-color:#ddeedbf7;border:1px solid #9bc19c;right:20px;top:20px}
 .legend-label{font-size:.8em!important;color:#5d5d5d!important}
 
-#grid-item-tooltip{z-index:1000;height:125px;width:190px;margin-left:60px;position:absolute;font-size:.75em;border-radius:5px;background:#007395;box-shadow:0 0 14px rgba(0,0,0,0.3);color:white;line-height:16px;padding:8px 10px;opacity:.97;text-align:justify;}
+#grid-item-tooltip{z-index:1000;height:125px;width:250px;margin-left:60px;position:absolute;font-size:.75em;border-radius:5px;background:#007395;box-shadow:0 0 14px rgba(0,0,0,0.3);color:white;line-height:16px;padding:8px 10px;opacity:.97;text-align:justify;}
 .tooltipCitation
 .tooltipCollection
 .tooltipInventNr

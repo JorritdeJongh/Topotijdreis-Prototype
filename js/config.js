@@ -91,7 +91,7 @@ var Config = {
     "BASEMAP_INIT_Y": 454492,
 
     /*Set the base zoom level at which the basemap loads in*/
-    "BASEMAP_INIT_ZOOM": 3,
+    "BASEMAP_INIT_ZOOM": 1,
     /**************************************************************************
      *
      * Map click crosshair
