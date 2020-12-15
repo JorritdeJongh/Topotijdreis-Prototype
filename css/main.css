@@ -25,7 +25,7 @@ body{overflow:hidden}
 .logo-med{opacity:.75!important}
 .dijitSplitter{margin-left:395px!important;background-color:#71b3c6!important}
 .halfCircleRight{height:80px;width:40px;border-radius:0 80px 80px 0;-moz-border-radius:0 80px 80px 0;-webkit-border-radius:0 80px 80px 0;float:left;font-size:3em;padding-top:5px;padding-left:5px;margin-top:20px}
-.dijitSliderH{width:70%!important;margin-left:2.5em!important;opacity:.85}
+.dijitSliderH{width:70%!important;margin-left:3em!important;opacity:.85}
 .outside-lod{opacity:.7}
 .step-one-message-container{position:absolute;width:100%}
 .step-two-message-container{position:absolute;bottom:320px;width:100%;}

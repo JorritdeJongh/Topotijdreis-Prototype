@@ -1,9 +1,9 @@
 var Config = {
     // Register your app with your own APP ID
     // https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/accessing-arcgis-online-services/
-    "APP_ID": "iuO2VsBjOckrCOxY",
+    "APP_ID": "Kz0DEDlZl5YfTlbb",
 
-    "DOMAIN": "edemo6.esri.nl",
+    "DOMAIN": "arcgis.com",
 
     // DO NOT MODIFY
     "USER_NOT_SIGNED_IN": "User is not signed in.",
